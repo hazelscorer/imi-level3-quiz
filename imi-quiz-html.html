@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMI Level 3 Light Vehicle Technology Quiz</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Lucide React Icons as inline SVG components
+        const ChevronRight = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+        );
+
+        const ChevronLeft = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+        );
+
+        const CheckCircle = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        );
+
+        const XCircle = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        );
+
+        const RotateCcw = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+        );
+
+        const QuizApp = () => {
+            const quizData = {
+                "Chapter 1: Introduction to Light Vehicle Technology": [
+                    {
+                        question: "What are the two main types of protective equipment mentioned for automotive work?",
+                        options: [
+                            "Personal Protective Equipment (PPE) and Vehicle Security Equipment",
+                            "Personal Protective Equipment (PPE) and Vehicle Protective Equipment (VPE)",
+                            "Safety Equipment and Workshop Equipment",
+                            "Hand Protection and Eye Protection"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Which of the following is NOT mentioned as a hazard in light vehicle advanced technology systems?",
+                        options: [
+                            "Electrocution from high voltage systems",
+                            "Coming into contact with chemicals such as lubrication oils",
+                            "Exposure to extreme cold temperatures",
+                            "Contact with harmful substances"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "What protective equipment should be worn to protect the head from bumps when working under cars?",
+                        options: [
+                            "Hard hat",
+                            "Safety helmet",
+                            "Bump cap",
+                            "Safety goggles"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the primary purpose of safety goggles in automotive work?",
+                        options: [
+                            "To improve vision",
+                            "To reduce the risk of small objects or chemicals coming into contact with the eyes",
+                            "To protect against UV radiation",
+                            "To prevent dust accumulation"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What type of substance can barrier cream protect against that may be carcinogenic?",
+                        options: [
+                            "Water",
+                            "Diesel fuel",
+                            "Old lubrication oil",
+                            "Cleaning solvents"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "Which of the following is an example of Vehicle Protective Equipment (VPE)?",
+                        options: [
+                            "Safety boots",
+                            "Overalls",
+                            "Wing covers",
+                            "Safety goggles"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "What should you do with the owner's property before working on a vehicle?",
+                        options: [
+                            "Leave it in the vehicle",
+                            "Safely remove and store it",
+                            "Place it on the workshop floor",
+                            "Give it to the workshop manager"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the purpose of using seat covers during vehicle maintenance?",
+                        options: [
+                            "To improve driver comfort",
+                            "To prevent the seats from becoming dirty or damaged",
+                            "To protect the technician",
+                            "To comply with insurance requirements"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "According to the Environmental Protection Act 1990 (EPA), how must oils be disposed of?",
+                        options: [
+                            "Poured down the drain",
+                            "Stored in any available container",
+                            "Disposed of in the correct manner in a clearly marked container",
+                            "Mixed with other workshop waste"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "Who collects waste oil from workshops?",
+                        options: [
+                            "Local council",
+                            "The vehicle owner",
+                            "A licensed recycling company",
+                            "Any waste management company"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "What is the first step in preparing a car for safe working according to the text?",
+                        options: [
+                            "Apply the handbrake",
+                            "Immobilise the vehicle by removing the ignition key",
+                            "Chock the wheels",
+                            "Raise the vehicle on a lift"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What should be done to prevent the vehicle moving during maintenance?",
+                        options: [
+                            "Leave it in gear only",
+                            "Apply the handbrake or chock the wheels",
+                            "Turn off the engine",
+                            "Remove the battery"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Why is it important to follow a logical sequence when working?",
+                        options: [
+                            "It makes the work faster",
+                            "It reduces the possibility of missing things and accidents occurring",
+                            "It impresses the customer",
+                            "It is required by law"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What should you check before using measuring equipment?",
+                        options: [
+                            "That it is the newest model",
+                            "That it is accurate and calibrated",
+                            "That it is expensive",
+                            "That it is digital"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What does SWL stand for in relation to lifting equipment?",
+                        options: [
+                            "Standard Working Load",
+                            "Safe Working Limit",
+                            "Safe Working Load",
+                            "Standard Weight Limit"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "Who is the national independent watchdog for work-related health, safety and illness in the UK?",
+                        options: [
+                            "The Health and Safety Commission",
+                            "The Health and Safety Executive (HSE)",
+                            "The Department of Health",
+                            "The Automotive Safety Council"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What can HSE inspectors issue if they believe there are poor health and safety practices?",
+                        options: [
+                            "Warning letters",
+                            "Improvement notices and prohibition notices",
+                            "Financial rewards",
+                            "Safety certificates"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What is a prohibition notice?",
+                        options: [
+                            "A notice recommending improvements",
+                            "A notification that the employer must eliminate a risk",
+                            "A notification that the employer has to immediately stop all work until the safety risk is eliminated",
+                            "A fine for safety violations"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "What is corporate manslaughter?",
+                        options: [
+                            "Accidental death in the workplace",
+                            "If an employee dies while at work and the death was the result of the company's failure to provide a safe working environment",
+                            "Murder committed by a company director",
+                            "Any workplace injury"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Which Act protects the health and safety of everyone in your workplace?",
+                        options: [
+                            "The Workplace Act 1990",
+                            "The Health and Safety at Work Act 1974 (HASAWA)",
+                            "The Employment Rights Act 1996",
+                            "The Consumer Protection Act 1987"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Under HASAWA, what is the employee responsible for?",
+                        options: [
+                            "Providing safe equipment",
+                            "Taking care that you do not endanger yourself or others who may be affected by your work",
+                            "Writing health and safety policies",
+                            "Conducting risk assessments"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Which regulation requires employers to carry out risk assessments?",
+                        options: [
+                            "Health and Safety at Work Act 1974",
+                            "Workplace Regulations 1992",
+                            "The Management of Health and Safety at Work Regulations 1999",
+                            "RIDDOR 1995"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "What do the Workplace (Health, Safety and Welfare) Regulations 1992 cover?",
+                        options: [
+                            "Only ventilation issues",
+                            "A wide range of basic health, safety and welfare issues such as ventilation, heating, lighting, workstations, seating and welfare facilities",
+                            "Only electrical safety",
+                            "Only fire safety"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What does RIDDOR stand for?",
+                        options: [
+                            "Risk Investigation and Disease Documentation Regulations",
+                            "Reporting of Injuries, Diseases and Dangerous Occurrences Regulations",
+                            "Recording of Industrial Deaths and Dangerous Operations Regulations",
+                            "Risk Identification and Dangerous Duties Record"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Which regulation covers requirements for first aid in the workplace?",
+                        options: [
+                            "Health and Safety at Work Act 1974",
+                            "Workplace Regulations 1992",
+                            "Health and Safety (First Aid) Regulations 1981",
+                            "RIDDOR 1995"
+                        ],
+                        correct: 2
+                    }
+                ]
+            };
+
+            const [selectedChapter, setSelectedChapter] = useState(null);
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [selectedAnswers, setSelectedAnswers] = useState({});
+            const [showResults, setShowResults] = useState(false);
+            const [quizStarted, setQuizStarted] = useState(false);
+
+            const chapters = Object.keys(quizData);
+            const currentQuiz = selectedChapter ? quizData[selectedChapter] : [];
+
+            const handleStartQuiz = (chapter) => {
+                setSelectedChapter(chapter);
+                setQuizStarted(true);
+                setCurrentQuestion(0);
+                setSelectedAnswers({});
+                setShowResults(false);
+            };
+
+            const handleAnswerSelect = (questionIndex, answerIndex) => {
+                if (!showResults) {
+                    setSelectedAnswers({
+                        ...selectedAnswers,
+                        [questionIndex]: answerIndex
+                    });
+                }
+            };
+
+            const handleSubmit = () => {
+                setShowResults(true);
+            };
+
+            const handleRetake = () => {
+                setCurrentQuestion(0);
+                setSelectedAnswers({});
+                setShowResults(false);
+            };
+
+            const handleBackToChapters = () => {
+                setSelectedChapter(null);
+                setQuizStarted(false);
+                setCurrentQuestion(0);
+                setSelectedAnswers({});
+                setShowResults(false);
+            };
+
+            const calculateScore = () => {
+                let correct = 0;
+                currentQuiz.forEach((q, index) => {
+                    if (selectedAnswers[index] === q.correct) {
+                        correct++;
+                    }
+                });
+                return { correct, total: currentQuiz.length, percentage: (correct / currentQuiz.length) * 100 };
+            };
+
+            const allQuestionsAnswered = currentQuiz.length > 0 && 
+                Object.keys(selectedAnswers).length === currentQuiz.length;
+
+            if (!quizStarted) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="bg-white rounded-lg shadow-lg p-8 mt-8">
+                                <h1 className="text-4xl font-bold text-gray-800 mb-2">
+                                    IMI Level 3 Light Vehicle Technology
+                                </h1>
+                                <p className="text-gray-600 mb-8">Select a chapter to begin your quiz</p>
+                                
+                                <div className="space-y-4">
+                                    {chapters.map((chapter, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleStartQuiz(chapter)}
+                                            className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-md"
+                                        >
+                                            <div className="flex items-center justify-between">
+                                                <div className="text-left">
+                                                    <h3 className="text-xl font-semibold">{chapter}</h3>
+                                                    <p className="text-blue-100 text-sm mt-1">
+                                                        {quizData[chapter].length} questions
+                                                    </p>
+                                                </div>
+                                                <ChevronRight className="w-6 h-6" />
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (showResults) {
+                const score = calculateScore();
+                const passed = score.percentage === 100;
+
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="bg-white rounded-lg shadow-lg p-8 mt-8">
+                                <div className="text-center mb-8">
+                                    {passed ? (
+                                        <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-4" />
+                                    ) : (
+                                        <XCircle className="w-20 h-20 text-red-500 mx-auto mb-4" />
+                                    )}
+                                    
+                                    <h2 className="text-3xl font-bold mb-2">
+                                        {passed ? 'Congratulations! You Passed!' : 'Quiz Complete'}
+                                    </h2>
+                                    
+                                    <div className="text-6xl font-bold my-6" style={{ color: passed ? '#10b981' : '#ef4444' }}>
+                                        {score.correct}/{score.total}
+                                    </div>
+                                    
+                                    <p className="text-xl text-gray-600 mb-4">
+                                        {passed 
+                                            ? 'You answered all questions correctly!'
+                                            : 'You must answer all questions correctly to pass.'}
+                                    </p>
+                                </div>
+
+                                <div className="space-y-6 mb-8">
+                                    {currentQuiz.map((q, qIndex) => {
+                                        const userAnswer = selectedAnswers[qIndex];
+                                        const isCorrect = userAnswer === q.correct;
+                                        
+                                        return (
+                                            <div key={qIndex} className={`p-4 rounded-lg border-2 ${isCorrect ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'}`}>
+                                                <div className="flex items-start gap-3">
+                                                    {isCorrect ? (
+                                                        <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                                                    ) : (
+                                                        <XCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
+                                                    )}
+                                                    <div className="flex-1">
+                                                        <p className="font-semibold mb-2">Question {qIndex + 1}: {q.question}</p>
+                                                        <p className="text-sm text-gray-600">Your answer: {q.options[userAnswer]}</p>
+                                                        {!isCorrect && (
+                                                            <p className="text-sm text-green-700 font-semibold mt-1">
+                                                                Correct answer: {q.options[q.correct]}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={handleRetake}
+                                        className="flex-1 bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
+                                    >
+                                        <RotateCcw className="w-5 h-5" />
+                                        Retake Quiz
+                                    </button>
+                                    <button
+                                        onClick={handleBackToChapters}
+                                        className="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center gap-2"
+                                    >
+                                        <ChevronLeft className="w-5 h-5" />
+                                        Back to Chapters
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="bg-white rounded-lg shadow-lg p-8 mt-8">
+                            <div className="mb-6">
+                                <button
+                                    onClick={handleBackToChapters}
+                                    className="text-blue-600 hover:text-blue-800 flex items-center gap-2 mb-4"
+                                >
+                                    <ChevronLeft className="w-4 h-4" />
+                                    Back to Chapters
+                                </button>
+                                <h2 className="text-2xl font-bold text-gray-800">{selectedChapter}</h2>
+                                <div className="flex items-center justify-between mt-4">
+                                    <p className="text-gray-600">
+                                        Question {currentQuestion + 1} of {currentQuiz.length}
+                                    </p>
+                                    <div className="bg-gray-200 rounded-full h-2 w-64">
+                                        <div
+                                            className="bg-blue-500 h-2 rounded-full transition-all"
+                                            style={{ width: `${((currentQuestion + 1) / currentQuiz.length) * 100}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="mb-8">
+                                <h3 className="text-xl font-semibold mb-6 text-gray-800">
+                                    {currentQuiz[currentQuestion].question}
+                                </h3>
+                                
+                                <div className="space-y-3">
+                                    {currentQuiz[currentQuestion].options.map((option, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleAnswerSelect(currentQuestion, index)}
+                                            className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                                                selectedAnswers[currentQuestion] === index
+                                                    ? 'border-blue-500 bg-blue-50'
+                                                    : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                                            }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                                                    selectedAnswers[currentQuestion] === index
+                                                        ? 'border-blue-500 bg-blue-500'
+                                                        : 'border-gray-300'
+                                                }`}>
+                                                    {selectedAnswers[currentQuestion] === index && (
+                                                        <div className="w-3 h-3 bg-white rounded-full" />
+                                                    )}
+                                                </div>
+                                                <span>{option}</span>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <button
+                                    onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
+                                    disabled={currentQuestion === 0}
+                                    className="flex items-center gap-2 px-6 py-3 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    <ChevronLeft className="w-5 h-5" />
+                                    Previous
+                                </button>
+                                
+                                {currentQuestion < currentQuiz.length - 1 ? (
+                                    <button
+                                        onClick={() => setCurrentQuestion(currentQuestion + 1)}
+                                        className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors ml-auto"
+                                    >
+                                        Next
+                                        <ChevronRight className="w-5 h-5" />
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={handleSubmit}
+                                        disabled={!allQuestionsAnswered}
+                                        className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ml-auto"
+                                    >
+                                        Submit Quiz
+                                    </button>
+                                )}
+                            </div>
+
+                            {!allQuestionsAnswered && currentQuestion === currentQuiz.length - 1 && (
+                                <p className="text-amber-600 text-sm mt-4 text-center">
+                                    Please answer all questions before submitting
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<QuizApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
