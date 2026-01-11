@@ -11,30 +11,213 @@
 </head>
 <body>
     <div id="root"></div>
-    
+    <script type="text/babel" src="quiz-data.js"></script>
     <script type="text/babel">
         const { useState } = React;
-
-        // Lucide React Icons as inline SVG components
         const ChevronRight = ({ className }) => (
             <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
         );
-
         const ChevronLeft = ({ className }) => (
             <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
         );
-
         const CheckCircle = ({ className }) => (
             <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
         );
-
         const XCircle = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        );
+        const RotateCcw = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+        );
+
+        const QuizApp = () => {
+            const quizData = {
+                "Chapter 1: Working Practice & PPE (Pages 2-7)": [
+                    {q: "What are the two main types of protective equipment mentioned for automotive work?", o: ["Personal Protective Equipment (PPE) and Vehicle Security Equipment", "Personal Protective Equipment (PPE) and Vehicle Protective Equipment (VPE)", "Safety Equipment and Workshop Equipment", "Hand Protection and Eye Protection"], c: 1},
+                    {q: "Which of the following is NOT mentioned as a hazard in light vehicle advanced technology systems?", o: ["Electrocution from high voltage systems", "Coming into contact with chemicals such as lubrication oils", "Exposure to extreme cold temperatures", "Contact with harmful substances"], c: 2},
+                    {q: "What protective equipment should be worn to protect the head from bumps when working under cars?", o: ["Hard hat", "Safety helmet", "Bump cap", "Safety goggles"], c: 1},
+                    {q: "What is the primary purpose of safety goggles in automotive work?", o: ["To improve vision", "To reduce the risk of small objects or chemicals coming into contact with the eyes", "To protect against UV radiation", "To prevent dust accumulation"], c: 1},
+                    {q: "What type of substance can barrier cream protect against that may be carcinogenic?", o: ["Water", "Diesel fuel", "Old lubrication oil", "Cleaning solvents"], c: 2},
+                    {q: "Which of the following is an example of Vehicle Protective Equipment (VPE)?", o: ["Safety boots", "Overalls", "Wing covers", "Safety goggles"], c: 2},
+                    {q: "What should you do with the owner's property before working on a vehicle?", o: ["Leave it in the vehicle", "Safely remove and store it", "Place it on the workshop floor", "Give it to the workshop manager"], c: 1},
+                    {q: "What is the purpose of using seat covers during vehicle maintenance?", o: ["To improve driver comfort", "To prevent the seats from becoming dirty or damaged", "To protect the technician", "To comply with insurance requirements"], c: 1},
+                    {q: "According to the Environmental Protection Act 1990 (EPA), how must oils be disposed of?", o: ["Poured down the drain", "Stored in any available container", "Disposed of in the correct manner in a clearly marked container", "Mixed with other workshop waste"], c: 2},
+                    {q: "Who collects waste oil from workshops?", o: ["Local council", "The vehicle owner", "A licensed recycling company", "Any waste management company"], c: 2},
+                    {q: "What is the first step in preparing a car for safe working according to the text?", o: ["Apply the handbrake", "Immobilise the vehicle by removing the ignition key", "Chock the wheels", "Raise the vehicle on a lift"], c: 1},
+                    {q: "What should be done to prevent the vehicle moving during maintenance?", o: ["Leave it in gear only", "Apply the handbrake or chock the wheels", "Turn off the engine", "Remove the battery"], c: 1},
+                    {q: "Why is it important to follow a logical sequence when working?", o: ["It makes the work faster", "It reduces the possibility of missing things and accidents occurring", "It impresses the customer", "It is required by law"], c: 1},
+                    {q: "What should you check before using measuring equipment?", o: ["That it is the newest model", "That it is accurate and calibrated", "That it is expensive", "That it is digital"], c: 1},
+                    {q: "What does SWL stand for in relation to lifting equipment?", o: ["Standard Working Load", "Safe Working Limit", "Safe Working Load", "Standard Weight Limit"], c: 2},
+                    {q: "Who is the national independent watchdog for work-related health, safety and illness in the UK?", o: ["The Health and Safety Commission", "The Health and Safety Executive (HSE)", "The Department of Health", "The Automotive Safety Council"], c: 1},
+                    {q: "What can HSE inspectors issue if they believe there are poor health and safety practices?", o: ["Warning letters", "Improvement notices and prohibition notices", "Financial rewards", "Safety certificates"], c: 1},
+                    {q: "What is a prohibition notice?", o: ["A notice recommending improvements", "A notification that the employer must eliminate a risk", "A notification that the employer has to immediately stop all work until the safety risk is eliminated", "A fine for safety violations"], c: 2},
+                    {q: "What is corporate manslaughter?", o: ["Accidental death in the workplace", "If an employee dies while at work and the death was the result of the company's failure to provide a safe working environment", "Murder committed by a company director", "Any workplace injury"], c: 1},
+                    {q: "Which Act protects the health and safety of everyone in your workplace?", o: ["The Workplace Act 1990", "The Health and Safety at Work Act 1974 (HASAWA)", "The Employment Rights Act 1996", "The Consumer Protection Act 1987"], c: 1},
+                    {q: "Under HASAWA, what is the employee responsible for?", o: ["Providing safe equipment", "Taking care that you do not endanger yourself or others who may be affected by your work", "Writing health and safety policies", "Conducting risk assessments"], c: 1},
+                    {q: "Which regulation requires employers to carry out risk assessments?", o: ["Health and Safety at Work Act 1974", "Workplace Regulations 1992", "The Management of Health and Safety at Work Regulations 1999", "RIDDOR 1995"], c: 2},
+                    {q: "What do the Workplace (Health, Safety and Welfare) Regulations 1992 cover?", o: ["Only ventilation issues", "A wide range of basic health, safety and welfare issues such as ventilation, heating, lighting, workstations, seating and welfare facilities", "Only electrical safety", "Only fire safety"], c: 1},
+                    {q: "What does RIDDOR stand for?", o: ["Risk Investigation and Disease Documentation Regulations", "Reporting of Injuries, Diseases and Dangerous Occurrences Regulations", "Recording of Industrial Deaths and Dangerous Operations Regulations", "Risk Identification and Dangerous Duties Record"], c: 1},
+                    {q: "Which regulation covers requirements for first aid in the workplace?", o: ["Health and Safety at Work Act 1974", "Workplace Regulations 1992", "Health and Safety (First Aid) Regulations 1981", "RIDDOR 1995"], c: 2}
+                ],
+                "Chapter 1: RIDDOR, Risk Assessment & Safety Signs (Pages 8-13)": [
+                    {q: "What does RIDDOR stand for?", o: ["Risk Investigation and Disease Documentation Regulations", "Reporting of Injuries, Diseases and Dangerous Occurrences Regulations", "Recording of Industrial Deaths and Dangerous Operations Regulations", "Risk Identification and Dangerous Duties Record"], c: 1},
+                    {q: "According to RIDDOR, what must employers report to the HSE?", o: ["Only fatal accidents", "Accidents, near misses and ill health", "Equipment failures only", "Customer complaints"], c: 1},
+                    {q: "What information must be included on an accident record sheet?", o: ["Only the injured person's name", "Date, time, location, nature of injury, and account of the accident", "Just the date of the incident", "Only witness statements"], c: 1},
+                    {q: "What type of PPE was mentioned as being worn in the accident report example shown?", o: ["Hard hat only", "Safety goggles only", "Steel toe cap safety boots, overalls, bump cap, rough service gloves, and safety glasses", "Just safety boots"], c: 2},
+                    {q: "Who signs an accident record sheet?", o: ["Only the injured person", "The person completing the form and witnesses", "Just the service manager", "Only the HSE inspector"], c: 1},
+                    {q: "What does COSHH stand for?", o: ["Control of Safety and Health Hazards", "Control of Substances Hazardous to Health", "Chemical and Oil Safety Handling Hazards", "Control of Substance Handling and Operation Hazards"], c: 1},
+                    {q: "According to COSHH regulations, what must be done with hazardous substances?", o: ["They must be avoided completely", "They can be stored anywhere", "Substances must be marked with orange square with black symbols and listed", "They only need verbal warnings"], c: 2},
+                    {q: "What does the skull and crossbones hazard symbol indicate?", o: ["Flammable", "Toxic", "Corrosive", "Irritant"], c: 1},
+                    {q: "What does the flame symbol on a hazard label indicate?", o: ["Oxidising agent", "Corrosive", "Flammable", "Toxic"], c: 2},
+                    {q: "What does the 'X' symbol on hazard labels indicate?", o: ["Toxic", "Flammable", "Irritant", "Ecotoxic"], c: 2},
+                    {q: "What is a hazard?", o: ["The likelihood of harm happening", "Something that has the potential to cause harm or damage", "An accident that has already occurred", "A safety procedure"], c: 1},
+                    {q: "What is risk?", o: ["Something that causes harm", "A safety regulation", "The likelihood of the harm or damage actually happening", "A type of hazard"], c: 2},
+                    {q: "What does 'reasonably practicable' mean in risk assessment?", o: ["Completely eliminate all risks", "Can be carried out without incurring excessive effort or expense", "Ignore minor risks", "Only address major hazards"], c: 1},
+                    {q: "How many main steps are there in a risk assessment?", o: ["Three", "Four", "Five", "Six"], c: 2},
+                    {q: "What is Step 1 of a risk assessment?", o: ["Decide who might be harmed", "Identify the hazards", "Evaluate the risks", "Review the assessment"], c: 1},
+                    {q: "In Step 2 of risk assessment, who should you consider might be harmed?", o: ["Only employees", "Staff/colleagues, contractors, delivery operatives, customers, the general public, young people, and people with disabilities", "Just contractors", "Only the person doing the work"], c: 1},
+                    {q: "What should be done in Step 5 of a risk assessment?", o: ["Identify new hazards", "Train staff", "Review your assessment and update if necessary", "Purchase new equipment"], c: 2},
+                    {q: "Under which act must oils be disposed of in the correct manner?", o: ["Health and Safety at Work Act 1974", "The Waste (England and Wales) Regulations 2011 and Environmental Protection Act 1990 (EPA)", "RIDDOR 1995", "COSHH 2002"], c: 1},
+                    {q: "What is controlled waste?", o: ["Only household waste", "Any waste which should be disposed of to landfill", "Any waste that must be disposed of or kept in a way that is safe and will not pollute the environment or harm people", "Only commercial waste"], c: 2},
+                    {q: "What is an ecotoxic substance?", o: ["A substance that is flammable", "A substance that is harmful to the environment", "A substance that is toxic to humans only", "A substance that is corrosive"], c: 1},
+                    {q: "Which of the following is NOT listed as an example of controlled waste from an automotive workshop?", o: ["Old engine oil", "Oil filters", "Paper documents", "Batteries"], c: 2},
+                    {q: "Under the Environmental Protection (Duty of Care) Regulations 1991, controlled waste must only be transferred to whom?", o: ["Any waste collection company", "Someone who is authorised to take it, such as someone who holds a waste management licence or is a registered waste carrier", "The local council only", "Any recycling centre"], c: 1},
+                    {q: "What do red safety signs indicate?", o: ["A warning", "A mandatory instruction", "A prohibition (something you must not do)", "Safe conditions"], c: 2},
+                    {q: "What do blue safety signs indicate?", o: ["A prohibition", "A warning", "A mandatory instruction (something that you must do)", "Fire equipment location"], c: 2},
+                    {q: "What do yellow safety signs indicate?", o: ["Mandatory instructions", "Prohibitions", "A warning (hazard or danger)", "Safe exit routes"], c: 2}
+                ]
+            };
+
+            const [sel, setSel] = useState(null);
+            const [cur, setCur] = useState(0);
+            const [ans, setAns] = useState({});
+            const [res, setRes] = useState(false);
+            const [start, setStart] = useState(false);
+            const chap = Object.keys(quizData);
+            const quiz = sel ? quizData[sel] : [];
+
+            if (!start) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="bg-white rounded-lg shadow-lg p-8 mt-8">
+                                <h1 className="text-4xl font-bold text-gray-800 mb-2">IMI Level 3 Light Vehicle Technology</h1>
+                                <p className="text-gray-600 mb-8">Select a quiz to begin</p>
+                                <div className="space-y-4">
+                                    {chap.map((ch, i) => (
+                                        <button key={i} onClick={() => {setSel(ch); setStart(true); setCur(0); setAns({}); setRes(false);}} className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-md">
+                                            <div className="flex items-center justify-between">
+                                                <div className="text-left">
+                                                    <h3 className="text-xl font-semibold">{ch}</h3>
+                                                    <p className="text-blue-100 text-sm mt-1">{quizData[ch].length} questions • Must score 100% to pass</p>
+                                                </div>
+                                                <ChevronRight className="w-6 h-6" />
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (res) {
+                let correct = 0;
+                quiz.forEach((q, i) => { if (ans[i] === q.c) correct++; });
+                const passed = correct === quiz.length;
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="bg-white rounded-lg shadow-lg p-8 mt-8">
+                                <div className="text-center mb-8">
+                                    {passed ? <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-4" /> : <XCircle className="w-20 h-20 text-red-500 mx-auto mb-4" />}
+                                    <h2 className="text-3xl font-bold mb-2">{passed ? 'Congratulations! You Passed!' : 'Quiz Complete'}</h2>
+                                    <div className="text-6xl font-bold my-6" style={{ color: passed ? '#10b981' : '#ef4444' }}>{correct}/{quiz.length}</div>
+                                    <p className="text-xl text-gray-600 mb-4">{passed ? 'You answered all questions correctly!' : 'You must answer all questions correctly to pass.'}</p>
+                                </div>
+                                <div className="space-y-6 mb-8">
+                                    {quiz.map((q, i) => {
+                                        const isCorrect = ans[i] === q.c;
+                                        return (
+                                            <div key={i} className={`p-4 rounded-lg border-2 ${isCorrect ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'}`}>
+                                                <div className="flex items-start gap-3">
+                                                    {isCorrect ? <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" /> : <XCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />}
+                                                    <div className="flex-1">
+                                                        <p className="font-semibold mb-2">Question {i + 1}: {q.q}</p>
+                                                        <p className="text-sm text-gray-600">Your answer: {q.o[ans[i]]}</p>
+                                                        {!isCorrect && <p className="text-sm text-green-700 font-semibold mt-1">Correct answer: {q.o[q.c]}</p>}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                <div className="flex gap-4">
+                                    <button onClick={() => {setCur(0); setAns({}); setRes(false);}} className="flex-1 bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"><RotateCcw className="w-5 h-5" />Retake Quiz</button>
+                                    <button onClick={() => {setSel(null); setStart(false); setCur(0); setAns({}); setRes(false);}} className="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center gap-2"><ChevronLeft className="w-5 h-5" />Back to Quizzes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            const allAns = Object.keys(ans).length === quiz.length;
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="bg-white rounded-lg shadow-lg p-8 mt-8">
+                            <div className="mb-6">
+                                <button onClick={() => {setSel(null); setStart(false);}} className="text-blue-600 hover:text-blue-800 flex items-center gap-2 mb-4"><ChevronLeft className="w-4 h-4" />Back to Quizzes</button>
+                                <h2 className="text-2xl font-bold text-gray-800">{sel}</h2>
+                                <div className="flex items-center justify-between mt-4">
+                                    <p className="text-gray-600">Question {cur + 1} of {quiz.length}</p>
+                                    <div className="bg-gray-200 rounded-full h-2 w-64"><div className="bg-blue-500 h-2 rounded-full transition-all" style={{ width: `${((cur + 1) / quiz.length) * 100}%` }} /></div>
+                                </div>
+                            </div>
+                            <div className="mb-8">
+                                <h3 className="text-xl font-semibold mb-6 text-gray-800">{quiz[cur].q}</h3>
+                                <div className="space-y-3">
+                                    {quiz[cur].o.map((opt, i) => (
+                                        <button key={i} onClick={() => setAns({...ans, [cur]: i})} className={`w-full text-left p-4 rounded-lg border-2 transition-all ${ans[cur] === i ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'}`}>
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${ans[cur] === i ? 'border-blue-500 bg-blue-500' : 'border-gray-300'}`}>{ans[cur] === i && <div className="w-3 h-3 bg-white rounded-full" />}</div>
+                                                <span>{opt}</span>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="flex gap-4">
+                                <button onClick={() => setCur(Math.max(0, cur - 1))} disabled={cur === 0} className="flex items-center gap-2 px-6 py-3 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"><ChevronLeft className="w-5 h-5" />Previous</button>
+                                {cur < quiz.length - 1 ? (
+                                    <button onClick={() => setCur(cur + 1)} className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors ml-auto">Next<ChevronRight className="w-5 h-5" /></button>
+                                ) : (
+                                    <button onClick={() => setRes(true)} disabled={!allAns} className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ml-auto">Submit Quiz</button>
+                                )}
+                            </div>
+                            {!allAns && cur === quiz.length - 1 && <p className="text-amber-600 text-sm mt-4 text-center">Please answer all questions before submitting</p>}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<QuizApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>        const XCircle = ({ className }) => (
             <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
