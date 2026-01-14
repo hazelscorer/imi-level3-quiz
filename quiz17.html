@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 17: Turbocharging & Supercharging - IMI Level 3</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="quiz17-data.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .quiz-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; }
+        .quiz-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
+        .quiz-header h1 { font-size: 28px; margin-bottom: 10px; }
+        .quiz-header p { font-size: 16px; opacity: 0.9; }
+        .progress-bar { background: rgba(255, 255, 255, 0.3); height: 8px; border-radius: 4px; margin-top: 20px; overflow: hidden; }
+        .progress-fill { background: white; height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+        .quiz-content { padding: 40px; }
+        .question-section { margin-bottom: 30px; }
+        .question-number { color: #667eea; font-weight: bold; margin-bottom: 10px; }
+        .question-text { font-size: 20px; color: #333; margin-bottom: 25px; line-height: 1.6; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option { padding: 18px; border: 2px solid #e0e0e0; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; background: white; }
+        .option:hover { border-color: #667eea; background: #f8f9ff; transform: translateX(5px); }
+        .option.selected { border-color: #667eea; background: #f0f3ff; }
+        .option.correct { border-color: #4caf50; background: #e8f5e9; }
+        .option.incorrect { border-color: #f44336; background: #ffebee; }
+        .option.disabled { cursor: not-allowed; opacity: 0.6; }
+        .navigation { display: flex; justify-content: space-between; margin-top: 30px; gap: 15px; }
+        .btn { padding: 14px 30px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: #e0e0e0; color: #333; }
+        .btn-secondary:hover:not(:disabled) { background: #d0d0d0; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results { text-align: center; padding: 40px; }
+        .results h2 { font-size: 32px; color: #333; margin-bottom: 20px; }
+        .score { font-size: 64px; font-weight: bold; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 20px 0; }
+        .pass-message { font-size: 24px; color: #4caf50; margin: 20px 0; font-weight: 600; }
+        .fail-message { font-size: 24px; color: #f44336; margin: 20px 0; font-weight: 600; }
+        .results-details { background: #f5f5f5; padding: 20px; border-radius: 12px; margin: 30px 0; }
+        .results-details p { font-size: 18px; color: #666; margin: 10px 0; }
+        .home-link { display: inline-block; margin-top: 20px; padding: 14px 30px; background: #e0e0e0; color: #333; text-decoration: none; border-radius: 10px; font-weight: 600; transition: all 0.3s ease; }
+        .home-link:hover { background: #d0d0d0; transform: translateY(-2px); }
+        @media (max-width: 600px) { .quiz-content { padding: 20px; } .quiz-header h1 { font-size: 22px; } .question-text { font-size: 18px; } .navigation { flex-direction: column; } .btn { width: 100%; } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState } = React;
+        function Quiz() {
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showResult, setShowResult] = useState(false);
+            const [score, setScore] = useState(0);
+            const [answeredQuestions, setAnsweredQuestions] = useState([]);
+            const [isAnswerChecked, setIsAnswerChecked] = useState(false);
+            const questions = quiz17Data.questions;
+            const totalQuestions = questions.length;
+            const currentQ = questions[currentQuestion];
+            const handleAnswerClick = (index) => { if (!isAnswerChecked) { setSelectedAnswer(index); } };
+            const handleCheckAnswer = () => { if (selectedAnswer === null) return; setIsAnswerChecked(true); const isCorrect = selectedAnswer === currentQ.correct; setAnsweredQuestions([...answeredQuestions, { question: currentQ.question, selectedAnswer: currentQ.options[selectedAnswer], correctAnswer: currentQ.options[currentQ.correct], isCorrect: isCorrect }]); if (isCorrect) { setScore(score + 1); } };
+            const handleNextQuestion = () => { if (currentQuestion < totalQuestions - 1) { setCurrentQuestion(currentQuestion + 1); setSelectedAnswer(null); setIsAnswerChecked(false); } else { setShowResult(true); } };
+            const handlePreviousQuestion = () => { if (currentQuestion > 0) { setCurrentQuestion(currentQuestion - 1); setSelectedAnswer(null); setIsAnswerChecked(false); } };
+            const handleRestartQuiz = () => { setCurrentQuestion(0); setSelectedAnswer(null); setShowResult(false); setScore(0); setAnsweredQuestions([]); setIsAnswerChecked(false); };
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            const passed = (score / totalQuestions) * 100 === 100;
+            if (showResult) { return (<div className="quiz-container"><div className="quiz-header"><h1>Quiz Complete!</h1></div><div className="results"><h2>Your Results</h2><div className="score">{score}/{totalQuestions}</div><div className="results-details"><p>Percentage: {((score / totalQuestions) * 100).toFixed(1)}%</p><p>Correct Answers: {score}</p><p>Incorrect Answers: {totalQuestions - score}</p></div>{passed ? (<div className="pass-message">✓ Congratulations! You passed with 100%!</div>) : (<div className="fail-message">✗ You need 100% to pass. Please try again.</div>)}<button className="btn btn-primary" onClick={handleRestartQuiz}>Retake Quiz</button><a href="index.html" className="home-link">Back to Home</a></div></div>); }
+            return (<div className="quiz-container"><div className="quiz-header"><h1>Quiz 17: Turbocharging & Supercharging</h1><p>Question {currentQuestion + 1} of {totalQuestions}</p><div className="progress-bar"><div className="progress-fill" style={{ width: `${progress}%` }}></div></div></div><div className="quiz-content"><div className="question-section"><div className="question-number">Question {currentQuestion + 1}</div><div className="question-text">{currentQ.question}</div><div className="options">{currentQ.options.map((option, index) => { let className = 'option'; if (selectedAnswer === index) className += ' selected'; if (isAnswerChecked) { className += ' disabled'; if (index === currentQ.correct) className += ' correct'; if (selectedAnswer === index && index !== currentQ.correct) { className += ' incorrect'; } } return (<div key={index} className={className} onClick={() => handleAnswerClick(index)}>{option}</div>); })}</div></div><div className="navigation"><button className="btn btn-secondary" onClick={handlePreviousQuestion} disabled={currentQuestion === 0}>Previous</button>{!isAnswerChecked ? (<button className="btn btn-primary" onClick={handleCheckAnswer} disabled={selectedAnswer === null}>Check Answer</button>) : (<button className="btn btn-primary" onClick={handleNextQuestion}>{currentQuestion === totalQuestions - 1 ? 'Finish Quiz' : 'Next Question'}</button>)}</div></div></div>);
+        }
+        const root = ReactDOM.createRoot(document.getElementById('root')); root.render(<Quiz />);
+    </script>
+</body>
+</html>
