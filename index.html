@@ -5,47 +5,276 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IMI Level 3 Light Vehicle Technology Quizzes</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        header { text-align: center; color: white; padding: 40px 20px; }
-        header h1 { font-size: 42px; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); }
-        header p { font-size: 20px; opacity: 0.9; }
-        .quiz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; padding: 20px 0; }
-        .quiz-card { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; text-decoration: none; color: inherit; display: block; }
-        .quiz-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); }
-        .quiz-number { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 20px; font-weight: bold; margin-bottom: 15px; font-size: 14px; }
-        .quiz-title { font-size: 22px; font-weight: 600; color: #333; margin-bottom: 10px; }
-        .quiz-description { color: #666; line-height: 1.6; margin-bottom: 15px; }
-        .quiz-meta { display: flex; justify-content: space-between; font-size: 14px; color: #999; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0; }
-        .footer { text-align: center; color: white; padding: 40px 20px; margin-top: 40px; }
-        .footer p { opacity: 0.8; }
-        @media (max-width: 768px) { header h1 { font-size: 32px; } header p { font-size: 16px; } .quiz-grid { grid-template-columns: 1fr; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2d3748;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #4a5568;
+            font-size: 18px;
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .quiz-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .quiz-title {
+            color: #2d3748;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .quiz-description {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .stats h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 10px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #4a5568;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .quiz-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <header><h1>IMI Level 3 Light Vehicle Technology</h1><p>Graham Stoakes Textbook Quiz Series</p></header>
-        <div class="quiz-grid">
-            <a href="quiz1.html" class="quiz-card"><span class="quiz-number">Quiz 1</span><h2 class="quiz-title">Working Practices & Procedures</h2><p class="quiz-description">Safe working practices, workshop organization, and professional standards.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 2-8</span></div></a>
-            <a href="quiz2.html" class="quiz-card"><span class="quiz-number">Quiz 2</span><h2 class="quiz-title">Health & Safety Regulations</h2><p class="quiz-description">Legal requirements, risk assessments, PPE, and workplace safety.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 9-14</span></div></a>
-            <a href="quiz3.html" class="quiz-card"><span class="quiz-number">Quiz 3</span><h2 class="quiz-title">Emergency Procedures & First Aid</h2><p class="quiz-description">Emergency response, fire safety, accident procedures, and first aid.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 15-20</span></div></a>
-            <a href="quiz4.html" class="quiz-card"><span class="quiz-number">Quiz 4</span><h2 class="quiz-title">Diagnostic Principles & Techniques</h2><p class="quiz-description">Systematic diagnosis, fault-finding methods, and testing.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 21-24</span></div></a>
-            <a href="quiz5.html" class="quiz-card"><span class="quiz-number">Quiz 5</span><h2 class="quiz-title">Vehicle Data & Documentation</h2><p class="quiz-description">Technical specifications, service records, and information sources.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 25-28</span></div></a>
-            <a href="quiz6.html" class="quiz-card"><span class="quiz-number">Quiz 6</span><h2 class="quiz-title">Chassis Diagnostics & Safety</h2><p class="quiz-description">Safety procedures, electrical systems, and diagnostic tooling.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 29-34</span></div></a>
-            <a href="quiz7.html" class="quiz-card"><span class="quiz-number">Quiz 7</span><h2 class="quiz-title">ABS & EBD Braking Systems</h2><p class="quiz-description">Anti-lock braking, wheel speed sensors, and ABS modulators.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 35-39</span></div></a>
-            <a href="quiz8.html" class="quiz-card"><span class="quiz-number">Quiz 8</span><h2 class="quiz-title">ABS Fault Diagnosis</h2><p class="quiz-description">Mechanical inspection, fault symptoms, and DTCs.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 40-44</span></div></a>
-            <a href="quiz9.html" class="quiz-card"><span class="quiz-number">Quiz 9</span><h2 class="quiz-title">Advanced Braking Systems</h2><p class="quiz-description">EBD, brake assist, EPB, traction control, and stability control.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 45-49</span></div></a>
-            <a href="quiz10.html" class="quiz-card"><span class="quiz-number">Quiz 10</span><h2 class="quiz-title">Regenerative Braking & Steering</h2><p class="quiz-description">Hybrid braking, steering geometry, and Ackerman principle.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 50-54</span></div></a>
-            <a href="quiz11.html" class="quiz-card"><span class="quiz-number">Quiz 11</span><h2 class="quiz-title">Power-Assisted Steering</h2><p class="quiz-description">Hydraulic PAS components, control valves, and diagnostics.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 55-60</span></div></a>
-            <a href="quiz12.html" class="quiz-card"><span class="quiz-number">Quiz 12</span><h2 class="quiz-title">Advanced Steering & Alignment</h2><p class="quiz-description">EPS systems, four-wheel steering, and wheel alignment.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 61-65</span></div></a>
-            <a href="quiz13.html" class="quiz-card"><span class="quiz-number">Quiz 13</span><h2 class="quiz-title">Suspension Systems</h2><p class="quiz-description">Springs, dampers, vehicle body movements, and active suspension.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 66-70</span></div></a>
-            <a href="quiz14.html" class="quiz-card"><span class="quiz-number">Quiz 14</span><h2 class="quiz-title">Advanced Active Suspension</h2><p class="quiz-description">Variable rate damping, hydro-pneumatic systems, and fault codes.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 71-75</span></div></a>
-            <a href="quiz15.html" class="quiz-card"><span class="quiz-number">Quiz 15</span><h2 class="quiz-title">Final Check & Assessment</h2><p class="quiz-description">Chapter 2 review and assessment preparation guidance.</p><div class="quiz-meta"><span>20 Questions</span><span>Pages 76-78</span></div></a>
-            <a href="quiz16.html" class="quiz-card"><span class="quiz-number">Quiz 16</span><h2 class="quiz-title">Engine Diagnostics Introduction</h2><p class="quiz-description">Safe working, information sources, ECU, sensors, and tooling.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 79-84</span></div></a>
-            <a href="quiz17.html" class="quiz-card"><span class="quiz-number">Quiz 17</span><h2 class="quiz-title">Turbocharging & Supercharging</h2><p class="quiz-description">Volumetric efficiency, turbo/supercharger operation, lag, wastegates, intercoolers, and common faults.</p><div class="quiz-meta"><span>25 Questions</span><span>Pages 85-89</span></div></a>
+        <div class="header">
+            <h1>IMI Level 3 Light Vehicle Technology</h1>
+            <p>Graham Stoakes Textbook Quiz Series</p>
         </div>
-        <footer class="footer"><p>IMI Level 3 Light Vehicle Technology Quiz Series</p><p>Based on the Graham Stoakes Textbook</p><p>Pass mark: 100% | All quizzes can be retaken</p></footer>
+
+        <div class="quiz-grid">
+            <a href="quiz1.html" class="quiz-card">
+                <span class="quiz-number">Quiz 1</span>
+                <div class="quiz-title">Working Practices & Procedures</div>
+                <div class="quiz-description">Pages 2-5: Personal conduct, safety documentation, and workshop procedures</div>
+            </a>
+
+            <a href="quiz2.html" class="quiz-card">
+                <span class="quiz-number">Quiz 2</span>
+                <div class="quiz-title">Health & Safety Regulations</div>
+                <div class="quiz-description">Pages 6-9: Workplace safety standards, risk assessment, and legal responsibilities</div>
+            </a>
+
+            <a href="quiz3.html" class="quiz-card">
+                <span class="quiz-number">Quiz 3</span>
+                <div class="quiz-title">Emergency Procedures & Safety</div>
+                <div class="quiz-description">Pages 10-13: Fire safety, first aid, accident reporting, and emergency protocols</div>
+            </a>
+
+            <a href="quiz4.html" class="quiz-card">
+                <span class="quiz-number">Quiz 4</span>
+                <div class="quiz-title">Diagnostic & Repair Methodologies</div>
+                <div class="quiz-description">Pages 14-17: Systematic diagnosis, fault finding, and structured repair processes</div>
+            </a>
+
+            <a href="quiz5.html" class="quiz-card">
+                <span class="quiz-number">Quiz 5</span>
+                <div class="quiz-title">Advanced Diagnostic Techniques</div>
+                <div class="quiz-description">Pages 18-28: OBD systems, fault codes, test equipment, and diagnostic procedures</div>
+            </a>
+
+            <a href="quiz6.html" class="quiz-card">
+                <span class="quiz-number">Quiz 6</span>
+                <div class="quiz-title">Engine Lubrication & Cooling Systems</div>
+                <div class="quiz-description">Pages 29-34: Oil systems, cooling systems, maintenance procedures</div>
+            </a>
+
+            <a href="quiz7.html" class="quiz-card">
+                <span class="quiz-number">Quiz 7</span>
+                <div class="quiz-title">Engine Components & Operation</div>
+                <div class="quiz-description">Pages 35-42: Pistons, crankshafts, camshafts, and valve train systems</div>
+            </a>
+
+            <a href="quiz8.html" class="quiz-card">
+                <span class="quiz-number">Quiz 8</span>
+                <div class="quiz-title">Fuel Systems & Injection</div>
+                <div class="quiz-description">Pages 43-53: Fuel delivery, injection systems, and fuel system diagnostics</div>
+            </a>
+
+            <a href="quiz9.html" class="quiz-card">
+                <span class="quiz-number">Quiz 9</span>
+                <div class="quiz-title">Ignition Systems</div>
+                <div class="quiz-description">Pages 54-61: Ignition components, timing, and diagnostic procedures</div>
+            </a>
+
+            <a href="quiz10.html" class="quiz-card">
+                <span class="quiz-number">Quiz 10</span>
+                <div class="quiz-title">Air Intake & Exhaust Systems</div>
+                <div class="quiz-description">Pages 62-69: Air filtration, manifolds, exhaust systems, and emissions control</div>
+            </a>
+
+            <a href="quiz11.html" class="quiz-card">
+                <span class="quiz-number">Quiz 11</span>
+                <div class="quiz-title">Engine Management Systems</div>
+                <div class="quiz-description">Pages 70-74: ECU operation, sensors, and electronic control systems</div>
+            </a>
+
+            <a href="quiz12.html" class="quiz-card">
+                <span class="quiz-number">Quiz 12</span>
+                <div class="quiz-title">Electrical Systems Fundamentals</div>
+                <div class="quiz-description">Pages 75-78: Electrical theory, circuits, and basic components</div>
+            </a>
+
+            <a href="quiz13.html" class="quiz-card">
+                <span class="quiz-number">Quiz 13</span>
+                <div class="quiz-title">Battery & Charging Systems</div>
+                <div class="quiz-description">Pages 79-81: Battery operation, alternators, and charging system diagnostics</div>
+            </a>
+
+            <a href="quiz14.html" class="quiz-card">
+                <span class="quiz-number">Quiz 14</span>
+                <div class="quiz-title">Starting & Lighting Systems</div>
+                <div class="quiz-description">Pages 82-84: Starter motors, lighting circuits, and related components</div>
+            </a>
+
+            <a href="quiz15.html" class="quiz-card">
+                <span class="quiz-number">Quiz 15</span>
+                <div class="quiz-title">Engine Performance & Testing</div>
+                <div class="quiz-description">Pages 85-86: Performance measurement and diagnostic testing procedures</div>
+            </a>
+
+            <a href="quiz16.html" class="quiz-card">
+                <span class="quiz-number">Quiz 16</span>
+                <div class="quiz-title">Emissions Control Systems</div>
+                <div class="quiz-description">Pages 87-88: Catalytic converters, EGR systems, and emissions reduction</div>
+            </a>
+
+            <a href="quiz17.html" class="quiz-card">
+                <span class="quiz-number">Quiz 17</span>
+                <div class="quiz-title">Forced Induction Systems</div>
+                <div class="quiz-description">Pages 89: Turbochargers and superchargers</div>
+            </a>
+
+            <a href="quiz18.html" class="quiz-card">
+                <span class="quiz-number">Quiz 18</span>
+                <div class="quiz-title">Variable Valve Control Systems</div>
+                <div class="quiz-description">Pages 90-94: VVT-I, VANOS, VTEC, VVC, Valvetronic & turbocharger diagnosis</div>
+            </a>
+        </div>
+
+        <div class="stats">
+            <h2>Progress Overview</h2>
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="stat-number">18</div>
+                    <div class="stat-label">Quizzes Available</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">450</div>
+                    <div class="stat-label">Total Questions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">94</div>
+                    <div class="stat-label">Pages Covered</div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
