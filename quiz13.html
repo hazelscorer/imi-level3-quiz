@@ -12,7 +12,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
         .quiz-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; }
-        .quiz-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
+        .quiz-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; position: relative; }
         .quiz-header h1 { font-size: 28px; margin-bottom: 10px; }
         .quiz-header p { font-size: 16px; opacity: 0.9; }
         .progress-bar { background: rgba(255, 255, 255, 0.3); height: 8px; border-radius: 4px; margin-top: 20px; overflow: hidden; }
@@ -45,6 +45,28 @@
         .home-link { display: inline-block; margin-top: 20px; padding: 14px 30px; background: #e0e0e0; color: #333; text-decoration: none; border-radius: 10px; font-weight: 600; transition: all 0.3s ease; }
         .home-link:hover { background: #d0d0d0; transform: translateY(-2px); }
         @media (max-width: 600px) { .quiz-content { padding: 20px; } .quiz-header h1 { font-size: 22px; } .question-text { font-size: 18px; } .navigation { flex-direction: column; } .btn { width: 100%; } }
+            .home-link-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .home-link-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
     </style>
 </head>
 <body>
@@ -68,12 +90,8 @@
             const handleRestartQuiz = () => { setCurrentQuestion(0); setSelectedAnswer(null); setShowResult(false); setScore(0); setAnsweredQuestions([]); setIsAnswerChecked(false); };
             const progress = ((currentQuestion + 1) / totalQuestions) * 100;
             const passed = (score / totalQuestions) * 100 === 100;
-            if (showResult) { return (<div className="quiz-container"><div className="quiz-header">
-                        <a href="index.html" className="home-link-header">← Home</a>
-                        <h1>Quiz Complete!</h1></div><div className="results"><h2>Your Results</h2><div className="score">{score}/{totalQuestions}</div><div className="results-details"><p>Percentage: {((score / totalQuestions) * 100).toFixed(1)}%</p><p>Correct Answers: {score}</p><p>Incorrect Answers: {totalQuestions - score}</p></div>{passed ? (<div className="pass-message">✓ Congratulations! You passed with 100%!</div>) : (<div className="fail-message">✗ You need 100% to pass. Please try again.</div>)}<button className="btn btn-primary" onClick={handleRestartQuiz}>Retake Quiz</button><a href="index.html" className="home-link">Back to Home</a></div></div>); }
-            return (<div className="quiz-container"><div className="quiz-header">
-                        <a href="index.html" className="home-link-header">← Home</a>
-                        <h1>Quiz 13: Suspension Systems</h1><p>Question {currentQuestion + 1} of {totalQuestions}</p><div className="progress-bar"><div className="progress-fill" style={{ width: `${progress}%` }}></div></div></div><div className="quiz-content"><div className="question-section"><div className="question-number">Question {currentQuestion + 1}</div><div className="question-text">{currentQ.question}</div><div className="options">{currentQ.options.map((option, index) => { let className = 'option'; if (selectedAnswer === index) className += ' selected'; if (isAnswerChecked) { className += ' disabled'; if (index === currentQ.correct) className += ' correct'; if (selectedAnswer === index && index !== currentQ.correct) { className += ' incorrect'; } } return (<div key={index} className={className} onClick={() => handleAnswerClick(index)}>{option}</div>); })}</div></div><div className="navigation"><button className="btn btn-secondary" onClick={handlePreviousQuestion} disabled={currentQuestion === 0}>Previous</button>{!isAnswerChecked ? (<button className="btn btn-primary" onClick={handleCheckAnswer} disabled={selectedAnswer === null}>Check Answer</button>) : (<button className="btn btn-primary" onClick={handleNextQuestion}>{currentQuestion === totalQuestions - 1 ? 'Finish Quiz' : 'Next Question'}</button>)}</div></div></div>);
+            if (showResult) { return (<div className="quiz-container"><div className="quiz-header"><a href="index.html" className="home-link-header">← Home</a><h1>Quiz Complete!</h1></div><div className="results"><h2>Your Results</h2><div className="score">{score}/{totalQuestions}</div><div className="results-details"><p>Percentage: {((score / totalQuestions) * 100).toFixed(1)}%</p><p>Correct Answers: {score}</p><p>Incorrect Answers: {totalQuestions - score}</p></div>{passed ? (<div className="pass-message">✓ Congratulations! You passed with 100%!</div>) : (<div className="fail-message">✗ You need 100% to pass. Please try again.</div>)}<button className="btn btn-primary" onClick={handleRestartQuiz}>Retake Quiz</button><a href="index.html" className="home-link">Back to Home</a></div></div>); }
+            return (<div className="quiz-container"><div className="quiz-header"><a href="index.html" className="home-link-header">← Home</a><h1>Quiz 13: Suspension Systems</h1><p>Question {currentQuestion + 1} of {totalQuestions}</p><div className="progress-bar"><div className="progress-fill" style={{ width: `${progress}%` }}></div></div></div><div className="quiz-content"><div className="question-section"><div className="question-number">Question {currentQuestion + 1}</div><div className="question-text">{currentQ.question}</div><div className="options">{currentQ.options.map((option, index) => { let className = 'option'; if (selectedAnswer === index) className += ' selected'; if (isAnswerChecked) { className += ' disabled'; if (index === currentQ.correct) className += ' correct'; if (selectedAnswer === index && index !== currentQ.correct) { className += ' incorrect'; } } return (<div key={index} className={className} onClick={() => handleAnswerClick(index)}>{option}</div>); })}</div></div><div className="navigation"><button className="btn btn-secondary" onClick={handlePreviousQuestion} disabled={currentQuestion === 0}>Previous</button>{!isAnswerChecked ? (<button className="btn btn-primary" onClick={handleCheckAnswer} disabled={selectedAnswer === null}>Check Answer</button>) : (<button className="btn btn-primary" onClick={handleNextQuestion}>{currentQuestion === totalQuestions - 1 ? 'Finish Quiz' : 'Next Question'}</button>)}</div></div></div>);
         }
         const root = ReactDOM.createRoot(document.getElementById('root')); root.render(<Quiz />);
     </script>

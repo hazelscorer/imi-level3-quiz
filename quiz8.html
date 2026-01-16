@@ -35,32 +35,8 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 30px;
-            text-align: center;
-            position: relative;
+            text-align: center; position: relative;
         }
-
-        .home-link-header {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            text-decoration: none;
-            font-size: 24px;
-            font-weight: bold;
-            padding: 8px 15px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .home-link-header:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateX(-3px);
-        }
-
 
         .quiz-header h1 {
             font-size: 28px;
@@ -276,6 +252,28 @@
                 width: 100%;
             }
         }
+            .home-link-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .home-link-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
     </style>
 </head>
 <body>
@@ -354,8 +352,7 @@
                 return (
                     <div className="quiz-container">
                         <div className="quiz-header">
-                        <a href="index.html" className="home-link-header">← Home</a>
-                        <h1>Quiz Complete!</h1>
+                            <h1>Quiz Complete!</h1>
                         </div>
                         <div className="results">
                             <h2>Your Results</h2>
@@ -386,7 +383,6 @@
             return (
                 <div className="quiz-container">
                     <div className="quiz-header">
-                        <a href="index.html" className="home-link-header">← Home</a>
                         <h1>Quiz 8: ABS Fault Diagnosis</h1>
                         <p>Question {currentQuestion + 1} of {totalQuestions}</p>
                         <div className="progress-bar">
