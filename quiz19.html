@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 19: Engine Mechanical Faults - IMI Level 3</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="quiz19-data.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .home-text-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .home-text-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .quiz-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 8px;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .quiz-content {
+            padding: 40px;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            color: #2d3748;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-button {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            padding: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            font-size: 16px;
+            color: #2d3748;
+        }
+
+        .option-button:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateX(5px);
+        }
+
+        .option-button.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .option-button.correct {
+            border-color: #48bb78;
+            background: #48bb78;
+            color: white;
+        }
+
+        .option-button.incorrect {
+            border-color: #f56565;
+            background: #f56565;
+            color: white;
+        }
+
+        .option-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .explanation {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .explanation-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .explanation-text {
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-button.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-button.secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .nav-button.secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-container {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .results-score {
+            font-size: 72px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+
+        .results-message {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 30px;
+        }
+
+        .results-details {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .result-value {
+            color: #2d3748;
+            font-weight: bold;
+        }
+
+        .home-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .pass-badge {
+            display: inline-block;
+            background: #48bb78;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .fail-badge {
+            display: inline-block;
+            background: #f56565;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 600px) {
+            .quiz-content {
+                padding: 20px;
+            }
+
+            .quiz-header h1 {
+                font-size: 24px;
+            }
+
+            .question-text {
+                font-size: 18px;
+            }
+
+            .results-score {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Quiz() {
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showExplanation, setShowExplanation] = useState(false);
+            const [score, setScore] = useState(0);
+            const [quizComplete, setQuizComplete] = useState(false);
+            const [incorrectAnswers, setIncorrectAnswers] = useState([]);
+
+            const questions = quiz19Data.questions;
+            const totalQuestions = questions.length;
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+
+            const handleAnswerSelect = (optionIndex) => {
+                if (selectedAnswer !== null) return;
+                
+                setSelectedAnswer(optionIndex);
+                setShowExplanation(true);
+
+                if (optionIndex === questions[currentQuestion].correct) {
+                    setScore(score + 1);
+                } else {
+                    setIncorrectAnswers([...incorrectAnswers, {
+                        questionNumber: currentQuestion + 1,
+                        question: questions[currentQuestion].question,
+                        userAnswer: questions[currentQuestion].options[optionIndex],
+                        correctAnswer: questions[currentQuestion].options[questions[currentQuestion].correct]
+                    }]);
+                }
+            };
+
+            const handleNext = () => {
+                if (currentQuestion < totalQuestions - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                    setSelectedAnswer(null);
+                    setShowExplanation(false);
+                } else {
+                    setQuizComplete(true);
+                }
+            };
+
+            const handleRetry = () => {
+                setCurrentQuestion(0);
+                setSelectedAnswer(null);
+                setShowExplanation(false);
+                setScore(0);
+                setQuizComplete(false);
+                setIncorrectAnswers([]);
+            };
+
+            if (quizComplete) {
+                const percentage = (score / totalQuestions) * 100;
+                const passed = percentage === 100;
+
+                return (
+                    <div className="quiz-container">
+                        <div className="quiz-header">
+                            <a href="index.html" className="home-text-link">← Back to Home</a>
+                            <h1>Quiz Complete!</h1>
+                            <p>{quiz19Data.quizSubtitle}</p>
+                        </div>
+                        <div className="results-container">
+                            <div className="results-score">{percentage.toFixed(0)}%</div>
+                            <div className="results-message">
+                                {passed ? "Perfect Score! 🎉" : "Keep Practicing! 📚"}
+                            </div>
+                            <div className={passed ? "pass-badge" : "fail-badge"}>
+                                {passed ? "PASSED ✓" : "NOT PASSED - 100% REQUIRED"}
+                            </div>
+                            <div className="results-details">
+                                <div className="result-row">
+                                    <span className="result-label">Correct Answers:</span>
+                                    <span className="result-value">{score} / {totalQuestions}</span>
+                                </div>
+                                <div className="result-row">
+                                    <span className="result-label">Percentage:</span>
+                                    <span className="result-value">{percentage.toFixed(1)}%</span>
+                                </div>
+                                <div className="result-row">
+                                    <span className="result-label">Status:</span>
+                                    <span className="result-value">{passed ? "PASSED ✓" : "NOT PASSED ✗"}</span>
+                                </div>
+                            </div>
+
+                            {!passed && incorrectAnswers.length > 0 && (
+                                <div style={{ marginTop: '30px', textAlign: 'left' }}>
+                                    <h3 style={{ color: '#2d3748', marginBottom: '20px' }}>Review Incorrect Answers:</h3>
+                                    {incorrectAnswers.map((item, index) => (
+                                        <div key={index} style={{ 
+                                            background: '#fff5f5', 
+                                            padding: '20px', 
+                                            borderRadius: '10px', 
+                                            marginBottom: '15px',
+                                            borderLeft: '4px solid #f56565'
+                                        }}>
+                                            <div style={{ fontWeight: 'bold', color: '#c53030', marginBottom: '10px' }}>
+                                                Question {item.questionNumber}
+                                            </div>
+                                            <div style={{ color: '#2d3748', marginBottom: '10px' }}>
+                                                {item.question}
+                                            </div>
+                                            <div style={{ color: '#e53e3e', marginBottom: '5px' }}>
+                                                <strong>Your answer:</strong> {item.userAnswer}
+                                            </div>
+                                            <div style={{ color: '#38a169' }}>
+                                                <strong>Correct answer:</strong> {item.correctAnswer}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div className="navigation-buttons">
+                                {!passed && (
+                                    <button className="nav-button primary" onClick={handleRetry}>
+                                        Retry Quiz
+                                    </button>
+                                )}
+                                <a href="index.html" className="nav-button secondary" style={{ 
+                                    textDecoration: 'none', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center' 
+                                }}>
+                                    Back to Home
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            const question = questions[currentQuestion];
+
+            return (
+                <div className="quiz-container">
+                    <div className="quiz-header">
+                        <a href="index.html" className="home-text-link">← Back to Home</a>
+                        <h1>{quiz19Data.quizTitle}</h1>
+                        <p>{quiz19Data.quizSubtitle}</p>
+                        <div className="progress-bar">
+                            <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                        </div>
+                    </div>
+                    <div className="quiz-content">
+                        <div className="question-container">
+                            <div className="question-number">
+                                Question {currentQuestion + 1} of {totalQuestions}
+                            </div>
+                            <div className="question-text">{question.question}</div>
+                            <div className="options-container">
+                                {question.options.map((option, index) => {
+                                    let className = "option-button";
+                                    if (selectedAnswer !== null) {
+                                        if (index === question.correct) {
+                                            className += " correct";
+                                        } else if (index === selectedAnswer) {
+                                            className += " incorrect";
+                                        }
+                                    } else if (selectedAnswer === index) {
+                                        className += " selected";
+                                    }
+
+                                    return (
+                                        <button
+                                            key={index}
+                                            className={className}
+                                            onClick={() => handleAnswerSelect(index)}
+                                            disabled={selectedAnswer !== null}
+                                        >
+                                            {option}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            {showExplanation && (
+                                <div className="explanation">
+                                    <div className="explanation-title">
+                                        {selectedAnswer === question.correct ? "✓ Correct!" : "✗ Incorrect"}
+                                    </div>
+                                    <div className="explanation-text">{question.explanation}</div>
+                                </div>
+                            )}
+                        </div>
+                        <div className="navigation-buttons">
+                            <button
+                                className="nav-button primary"
+                                onClick={handleNext}
+                                disabled={selectedAnswer === null}
+                            >
+                                {currentQuestion === totalQuestions - 1 ? "Finish Quiz" : "Next Question"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<Quiz />, document.getElementById('root'));
+    </script>
+</body>
+</html>
