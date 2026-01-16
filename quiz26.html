@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 26 - Electronic Fuel Injection & Fuel Supply</title>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="quiz26-data.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .home-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .home-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .quiz-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 32px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .quiz-header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .quiz-subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            margin-bottom: 24px;
+        }
+
+        .question-number {
+            color: #764ba2;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-button {
+            width: 100%;
+            padding: 16px;
+            text-align: left;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .option-button:hover:not(:disabled) {
+            background: #e8e9ff;
+            border-color: #667eea;
+            transform: translateX(4px);
+        }
+
+        .option-button.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .option-button.correct {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+
+        .option-button.incorrect {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        .option-button:disabled {
+            cursor: not-allowed;
+        }
+
+        .explanation {
+            margin-top: 16px;
+            padding: 16px;
+            background: #f0f9ff;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+
+        .explanation-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .explanation-text {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 24px;
+        }
+
+        .nav-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .next-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: auto;
+        }
+
+        .next-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .next-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results-container {
+            text-align: center;
+        }
+
+        .results-score {
+            font-size: 64px;
+            font-weight: bold;
+            margin: 24px 0;
+        }
+
+        .results-score.pass {
+            color: #10b981;
+        }
+
+        .results-score.fail {
+            color: #ef4444;
+        }
+
+        .results-message {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .results-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .results-stat {
+            font-size: 18px;
+            color: #666;
+            margin: 8px 0;
+        }
+
+        .restart-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+        }
+
+        .restart-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function Quiz() {
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showExplanation, setShowExplanation] = useState(false);
+            const [score, setScore] = useState(0);
+            const [quizComplete, setQuizComplete] = useState(false);
+            const [incorrectQuestions, setIncorrectQuestions] = useState([]);
+
+            const handleAnswerSelect = (optionIndex) => {
+                if (showExplanation) return;
+                
+                setSelectedAnswer(optionIndex);
+                setShowExplanation(true);
+
+                const isCorrect = optionIndex === quizData[currentQuestion].correct;
+                
+                if (isCorrect) {
+                    setScore(score + 1);
+                } else {
+                    setIncorrectQuestions([...incorrectQuestions, currentQuestion + 1]);
+                }
+            };
+
+            const handleNext = () => {
+                if (currentQuestion < quizData.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                    setSelectedAnswer(null);
+                    setShowExplanation(false);
+                } else {
+                    setQuizComplete(true);
+                }
+            };
+
+            const handleRestart = () => {
+                setCurrentQuestion(0);
+                setSelectedAnswer(null);
+                setShowExplanation(false);
+                setScore(0);
+                setQuizComplete(false);
+                setIncorrectQuestions([]);
+            };
+
+            const getOptionClass = (optionIndex) => {
+                if (!showExplanation) {
+                    return selectedAnswer === optionIndex ? 'selected' : '';
+                }
+                
+                if (optionIndex === quizData[currentQuestion].correct) {
+                    return 'correct';
+                }
+                
+                if (optionIndex === selectedAnswer && selectedAnswer !== quizData[currentQuestion].correct) {
+                    return 'incorrect';
+                }
+                
+                return '';
+            };
+
+            const percentage = Math.round((score / quizData.length) * 100);
+            const passed = percentage === 100;
+
+            if (quizComplete) {
+                return (
+                    <div className="container">
+                        <a href="index.html" className="home-button">← Back to Home</a>
+                        <div className="quiz-card">
+                            <div className="quiz-header">
+                                <h1>Quiz 26 Complete!</h1>
+                                <p className="quiz-subtitle">Electronic Fuel Injection & Fuel Supply</p>
+                            </div>
+                            
+                            <div className="results-container">
+                                <div className={`results-score ${passed ? 'pass' : 'fail'}`}>
+                                    {percentage}%
+                                </div>
+                                
+                                <div className={`results-message ${passed ? 'pass' : 'fail'}`}>
+                                    {passed ? '🎉 Excellent! Perfect Score!' : '❌ Not Quite There Yet'}
+                                </div>
+                                
+                                <div className="results-details">
+                                    <div className="results-stat">
+                                        <strong>Correct Answers:</strong> {score} out of {quizData.length}
+                                    </div>
+                                    <div className="results-stat">
+                                        <strong>Required to Pass:</strong> 100%
+                                    </div>
+                                    {!passed && incorrectQuestions.length > 0 && (
+                                        <div className="results-stat">
+                                            <strong>Review Questions:</strong> {incorrectQuestions.join(', ')}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {passed ? (
+                                    <div style={{ marginTop: '24px' }}>
+                                        <a href="index.html" className="restart-button">
+                                            Return to Home
+                                        </a>
+                                    </div>
+                                ) : (
+                                    <button onClick={handleRestart} className="restart-button">
+                                        Try Again
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="container">
+                    <a href="index.html" className="home-button">← Back to Home</a>
+                    <div className="quiz-card">
+                        <div className="quiz-header">
+                            <h1>Quiz 26</h1>
+                            <p className="quiz-subtitle">Electronic Fuel Injection & Fuel Supply</p>
+                        </div>
+
+                        <div className="progress-bar">
+                            <div 
+                                className="progress-fill" 
+                                style={{ width: `${((currentQuestion + 1) / quizData.length) * 100}%` }}
+                            />
+                        </div>
+
+                        <div className="question-container">
+                            <div className="question-number">
+                                Question {currentQuestion + 1} of {quizData.length}
+                            </div>
+                            
+                            <h2 className="question-text">
+                                {quizData[currentQuestion].question}
+                            </h2>
+
+                            <div className="options-container">
+                                {quizData[currentQuestion].options.map((option, index) => (
+                                    <button
+                                        key={index}
+                                        className={`option-button ${getOptionClass(index)}`}
+                                        onClick={() => handleAnswerSelect(index)}
+                                        disabled={showExplanation}
+                                    >
+                                        {option}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {showExplanation && (
+                                <div className="explanation">
+                                    <div className="explanation-title">
+                                        {selectedAnswer === quizData[currentQuestion].correct ? '✓ Correct!' : '✗ Incorrect'}
+                                    </div>
+                                    <div className="explanation-text">
+                                        {quizData[currentQuestion].explanation}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="navigation-buttons">
+                            <button
+                                className="nav-button next-button"
+                                onClick={handleNext}
+                                disabled={!showExplanation}
+                            >
+                                {currentQuestion === quizData.length - 1 ? 'Finish Quiz' : 'Next Question →'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<Quiz />, document.getElementById('root'));
+    </script>
+</body>
+</html>
