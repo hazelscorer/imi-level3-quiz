@@ -36,7 +36,31 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
         }
+
+        .home-link-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .home-link-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
 
         .quiz-header h1 {
             font-size: 28px;
@@ -371,7 +395,8 @@
                 return (
                     <div className="quiz-container">
                         <div className="quiz-header">
-                            <h1>Quiz Complete!</h1>
+                        <a href="index.html" className="home-link-header">← Home</a>
+                        <h1>Quiz Complete!</h1>
                             <p>{quiz18Data.quizSubtitle}</p>
                         </div>
                         <div className="results-container">
