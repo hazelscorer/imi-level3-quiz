@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMI Level 3 Quiz 59: Transmission Diagnosis & Fault Finding</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quiz-header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .quiz-info {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 10px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #2d3748;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            padding: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.05em;
+        }
+
+        .option:hover {
+            background: #edf2f7;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .option.correct {
+            background: #48bb78;
+            color: white;
+            border-color: #48bb78;
+        }
+
+        .option.incorrect {
+            background: #f56565;
+            color: white;
+            border-color: #f56565;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .explanation {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .explanation-title {
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .explanation-text {
+            color: #4a5568;
+            line-height: 1.7;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            display: none;
+        }
+
+        .results-container.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        .results-score {
+            font-size: 4em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+
+        .results-message {
+            font-size: 1.5em;
+            color: #4a5568;
+            margin-bottom: 30px;
+        }
+
+        .pass-status {
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+
+        .pass-status.pass {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .pass-status.fail {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .results-details {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .results-details h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            color: #2d3748;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .quiz-header, .question-container, .results-container {
+                padding: 20px;
+            }
+
+            .quiz-header h1 {
+                font-size: 1.5em;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+            }
+
+            .results-score {
+                font-size: 3em;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" style="display: inline-block; margin-bottom: 20px; padding: 12px 24px; background: rgba(255,255,255,0.9); color: #667eea; text-decoration: none; border-radius: 10px; font-weight: 600; transition: all 0.3s ease;">
+            ← Back to Home
+        </a>
+        
+        <div class="quiz-header">
+            <h1>⚙️ Quiz 59: Transmission Diagnosis & Fault Finding</h1>
+            <div class="quiz-info">
+                <p><strong>Pages 295-299</strong> | 25 Questions | Pass Mark: 100%</p>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div id="progressText" style="margin-top: 10px; color: #666; font-weight: 600;">
+                Question 1 of 25
+            </div>
+        </div>
+
+        <div id="quizContainer" class="question-container">
+            <!-- Quiz content will be inserted here -->
+        </div>
+
+        <div id="resultsContainer" class="results-container">
+            <!-- Results will be inserted here -->
+        </div>
+    </div>
+
+    <script src="quiz59-data.js"></script>
+    <script>
+        let currentQuestion = 0;
+        let score = 0;
+        let answeredQuestions = new Array(quizData.questions.length).fill(false);
+        let selectedAnswers = new Array(quizData.questions.length).fill(null);
+        let isAnswerSelected = false;
+
+        function loadQuestion() {
+            const question = quizData.questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const isAnswered = answeredQuestions[currentQuestion];
+            
+            let optionsHTML = '';
+            question.options.forEach((option, index) => {
+                let optionClass = 'option';
+                
+                if (isAnswered) {
+                    optionClass += ' disabled';
+                    if (index === question.correctAnswer) {
+                        optionClass += ' correct';
+                    } else if (index === selectedAnswers[currentQuestion]) {
+                        optionClass += ' incorrect';
+                    }
+                } else if (selectedAnswers[currentQuestion] === index) {
+                    optionClass += ' selected';
+                }
+                
+                optionsHTML += `
+                    <div class="${optionClass}" onclick="selectAnswer(${index})" data-index="${index}">
+                        ${option}
+                    </div>
+                `;
+            });
+
+            const explanationHTML = isAnswered ? `
+                <div class="explanation show">
+                    <div class="explanation-title">💡 Explanation</div>
+                    <div class="explanation-text">${question.explanation}</div>
+                </div>
+            ` : '';
+
+            container.innerHTML = `
+                <div class="question-number">Question ${currentQuestion + 1} of ${quizData.questions.length}</div>
+                <div class="question-text">${question.question}</div>
+                <div class="options">
+                    ${optionsHTML}
+                </div>
+                ${explanationHTML}
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="previousQuestion()" ${currentQuestion === 0 ? 'disabled' : ''}>
+                        ← Previous
+                    </button>
+                    ${!isAnswered ? `
+                        <button class="btn btn-primary" onclick="checkAnswer()" ${selectedAnswers[currentQuestion] === null ? 'disabled' : ''}>
+                            Check Answer ✓
+                        </button>
+                    ` : `
+                        <button class="btn btn-primary" onclick="nextQuestion()">
+                            ${currentQuestion === quizData.questions.length - 1 ? 'View Results' : 'Next →'}
+                        </button>
+                    `}
+                </div>
+            `;
+
+            updateProgress();
+            isAnswerSelected = selectedAnswers[currentQuestion] !== null;
+        }
+
+        function selectAnswer(index) {
+            if (answeredQuestions[currentQuestion]) return;
+            
+            selectedAnswers[currentQuestion] = index;
+            isAnswerSelected = true;
+            
+            // Update visual selection
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, i) => {
+                option.classList.remove('selected');
+                if (i === index) {
+                    option.classList.add('selected');
+                }
+            });
+
+            // Enable check answer button
+            const checkButton = document.querySelector('.btn-primary');
+            if (checkButton && checkButton.textContent.includes('Check')) {
+                checkButton.disabled = false;
+            }
+        }
+
+        function checkAnswer() {
+            if (selectedAnswers[currentQuestion] === null) return;
+            
+            answeredQuestions[currentQuestion] = true;
+            const question = quizData.questions[currentQuestion];
+            const isCorrect = selectedAnswers[currentQuestion] === question.correctAnswer;
+            
+            if (isCorrect) {
+                score++;
+            }
+            
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / quizData.questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = 
+                `Question ${currentQuestion + 1} of ${quizData.questions.length}`;
+        }
+
+        function showResults() {
+            const percentage = (score / quizData.questions.length) * 100;
+            const passed = percentage === 100;
+            
+            const resultsHTML = `
+                <h2>🎯 Quiz Complete!</h2>
+                <div class="results-score">${percentage.toFixed(0)}%</div>
+                <div class="pass-status ${passed ? 'pass' : 'fail'}">
+                    ${passed ? '✅ PASSED! Perfect Score!' : '❌ NOT PASSED - 100% Required'}
+                </div>
+                <div class="results-message">
+                    You scored ${score} out of ${quizData.questions.length}
+                </div>
+                <div class="results-details">
+                    <h3>📊 Detailed Results</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">Correct Answers:</span>
+                        <span class="detail-value">${score}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Incorrect Answers:</span>
+                        <span class="detail-value">${quizData.questions.length - score}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Total Questions:</span>
+                        <span class="detail-value">${quizData.questions.length}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Percentage:</span>
+                        <span class="detail-value">${percentage.toFixed(1)}%</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Pass Mark:</span>
+                        <span class="detail-value">100%</span>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="restartQuiz()">
+                        ↻ Retry Quiz
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='index.html'">
+                        📚 Back to Quiz List
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('resultsContainer').innerHTML = resultsHTML;
+            document.getElementById('resultsContainer').classList.add('show');
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            answeredQuestions.fill(false);
+            selectedAnswers.fill(null);
+            isAnswerSelected = false;
+            
+            document.getElementById('resultsContainer').classList.remove('show');
+            document.getElementById('quizContainer').style.display = 'block';
+            loadQuestion();
+        }
+
+        // Initialize quiz
+        loadQuestion();
+    </script>
+</body>
+</html>
