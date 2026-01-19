@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 62: Customer Service Communication Skills - IMI L3 LVT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Quiz 62: Customer Service Communication Skills</h1>
+            <p>Pages 309-313 | 25 Questions</p>
+        </header>
+
+        <div id="quiz-container">
+            <div id="question-container"></div>
+            <div id="options-container"></div>
+            <div id="explanation-container"></div>
+            
+            <div class="button-container">
+                <button id="prev-btn" onclick="previousQuestion()">Previous</button>
+                <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+                <button id="submit-btn" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+            </div>
+
+            <div id="progress-container">
+                <div class="progress-text">
+                    <span id="current-question">1</span> of <span id="total-questions">25</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="results-container" style="display: none;">
+            <h2>Quiz Results</h2>
+            <div id="score-display"></div>
+            <div id="result-message"></div>
+            <button onclick="restartQuiz()">Restart Quiz</button>
+            <a href="index.html"><button>Back to Home</button></a>
+        </div>
+    </div>
+
+    <script src="quiz62-data.js"></script>
+    <script src="script.js"></script>
+    <script>
+        loadQuiz(quiz62Data);
+    </script>
+</body>
+</html>
