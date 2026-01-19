@@ -3,473 +3,786 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMI Level 3 Light Vehicle Technology Quizzes</title>
-    <link rel="stylesheet" href="style.css">
+    <title>IMI Level 3 Light Vehicle Technology - Quiz Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .quiz-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .quiz-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .quiz-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .quiz-meta {
+            color: #666;
+            font-size: 0.85em;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .quiz-meta span {
+            margin-right: 15px;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .quiz-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>IMI Level 3 Light Vehicle Technology</h1>
-            <h2>Practice Quizzes</h2>
-        </header>
-
-        <div class="stats-container">
-            <div class="stat-box">
-                <div class="stat-number">63</div>
-                <div class="stat-label">Quizzes</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number">1,570</div>
-                <div class="stat-label">Questions</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number">318</div>
-                <div class="stat-label">Pages Covered</div>
+        <div class="header">
+            <h1>🚗 IMI Level 3 Light Vehicle Technology</h1>
+            <p>Comprehensive Quiz Collection - Graham Stoakes Textbook</p>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number">62</div>
+                    <div class="stat-label">Total Quizzes</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">1,545</div>
+                    <div class="stat-label">Total Questions</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">313</div>
+                    <div class="stat-label">Pages Covered</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Pass Mark</div>
+                </div>
             </div>
         </div>
 
-        <div class="quizzes-grid">
-            <div class="quiz-card">
-                <h3>Quiz 1</h3>
-                <p>Health & Safety Fundamentals</p>
-                <p class="quiz-info">Pages 2-6 | 25 questions</p>
-                <a href="quiz1.html"><button>Start Quiz</button></a>
-            </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search quizzes by title or topic..." onkeyup="filterQuizzes()">
+        </div>
 
-            <div class="quiz-card">
-                <h3>Quiz 2</h3>
-                <p>PPE & Risk Assessment</p>
-                <p class="quiz-info">Pages 7-11 | 25 questions</p>
-                <a href="quiz2.html"><button>Start Quiz</button></a>
-            </div>
+        <div class="quiz-grid" id="quizGrid">
+            <a href="quiz1.html" class="quiz-card">
+                <span class="quiz-number">Quiz 1</span>
+                <div class="quiz-title">Health & Safety Fundamentals</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 2-6</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 3</h3>
-                <p>Fire Safety & Prevention</p>
-                <p class="quiz-info">Pages 12-16 | 25 questions</p>
-                <a href="quiz3.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz2.html" class="quiz-card">
+                <span class="quiz-number">Quiz 2</span>
+                <div class="quiz-title">PPE & Emergency Procedures</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 7-11</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 4</h3>
-                <p>Lifting Equipment & Safety</p>
-                <p class="quiz-info">Pages 17-21 | 25 questions</p>
-                <a href="quiz4.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz3.html" class="quiz-card">
+                <span class="quiz-number">Quiz 3</span>
+                <div class="quiz-title">Hazardous Substances & Workshop Safety</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 12-16</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 5</h3>
-                <p>Electrical & Battery Safety</p>
-                <p class="quiz-info">Pages 22-26 | 25 questions</p>
-                <a href="quiz5.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz4.html" class="quiz-card">
+                <span class="quiz-number">Quiz 4</span>
+                <div class="quiz-title">Legislation & Vehicle Lifting</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 17-21</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 6</h3>
-                <p>Hazardous Substances & Air Quality</p>
-                <p class="quiz-info">Pages 27-31 | 25 questions</p>
-                <a href="quiz6.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz5.html" class="quiz-card">
+                <span class="quiz-number">Quiz 5</span>
+                <div class="quiz-title">Battery Safety & Electrical Fundamentals</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 22-26</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 7</h3>
-                <p>General Workshop Safety</p>
-                <p class="quiz-info">Pages 32-36 | 25 questions</p>
-                <a href="quiz7.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz6.html" class="quiz-card">
+                <span class="quiz-number">Quiz 6</span>
+                <div class="quiz-title">Electrical Circuits & Ohm's Law</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 27-31</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 8</h3>
-                <p>Maintenance Procedures & Records</p>
-                <p class="quiz-info">Pages 41-45 | 25 questions</p>
-                <a href="quiz8.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz7.html" class="quiz-card">
+                <span class="quiz-number">Quiz 7</span>
+                <div class="quiz-title">Series & Parallel Circuits</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 32-36</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 9</h3>
-                <p>Service Inspection & Fluids</p>
-                <p class="quiz-info">Pages 46-50 | 25 questions</p>
-                <a href="quiz9.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz8.html" class="quiz-card">
+                <span class="quiz-number">Quiz 8</span>
+                <div class="quiz-title">Electrical Components & Test Equipment</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 37-41</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 10</h3>
-                <p>Steering & Suspension Service</p>
-                <p class="quiz-info">Pages 51-55 | 25 questions</p>
-                <a href="quiz10.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz9.html" class="quiz-card">
+                <span class="quiz-number">Quiz 9</span>
+                <div class="quiz-title">Advanced Circuit Testing & Semiconductors</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 42-46</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 11</h3>
-                <p>Brake System Service</p>
-                <p class="quiz-info">Pages 56-60 | 25 questions</p>
-                <a href="quiz11.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz10.html" class="quiz-card">
+                <span class="quiz-number">Quiz 10</span>
+                <div class="quiz-title">Transistors & Wiring Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 47-51</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 12</h3>
-                <p>Emissions & Final Checks</p>
-                <p class="quiz-info">Pages 61-65 | 25 questions</p>
-                <a href="quiz12.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz11.html" class="quiz-card">
+                <span class="quiz-number">Quiz 11</span>
+                <div class="quiz-title">Terminal Identification & Cable Specifications</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 52-56</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 13</h3>
-                <p>Steering System Fundamentals</p>
-                <p class="quiz-info">Pages 70-74 | 25 questions</p>
-                <a href="quiz13.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz12.html" class="quiz-card">
+                <span class="quiz-number">Quiz 12</span>
+                <div class="quiz-title">Multiplexing & CAN Bus Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 57-61</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 14</h3>
-                <p>Power Assisted Steering Systems</p>
-                <p class="quiz-info">Pages 75-79 | 25 questions</p>
-                <a href="quiz14.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz13.html" class="quiz-card">
+                <span class="quiz-number">Quiz 13</span>
+                <div class="quiz-title">CAN Bus Protocol & LIN Bus</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 62-66</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 15</h3>
-                <p>Steering Geometry & Wheel Alignment</p>
-                <p class="quiz-info">Pages 80-84 | 25 questions</p>
-                <a href="quiz15.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz14.html" class="quiz-card">
+                <span class="quiz-number">Quiz 14</span>
+                <div class="quiz-title">MOST Bus & Diagnostic Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 67-71</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 16</h3>
-                <p>Suspension System Principles</p>
-                <p class="quiz-info">Pages 85-89 | 25 questions</p>
-                <a href="quiz16.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz15.html" class="quiz-card">
+                <span class="quiz-number">Quiz 15</span>
+                <div class="quiz-title">Battery Technology & Construction</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 72-76</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 17</h3>
-                <p>Suspension Components & Springs</p>
-                <p class="quiz-info">Pages 90-94 | 25 questions</p>
-                <a href="quiz17.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz16.html" class="quiz-card">
+                <span class="quiz-number">Quiz 16</span>
+                <div class="quiz-title">Battery Maintenance & Charging</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 77-81</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 18</h3>
-                <p>Dampers & Suspension Systems</p>
-                <p class="quiz-info">Pages 95-99 | 25 questions</p>
-                <a href="quiz18.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz17.html" class="quiz-card">
+                <span class="quiz-number">Quiz 17</span>
+                <div class="quiz-title">Jump Starting & Charging Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 82-86</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 19</h3>
-                <p>Wheels, Tyres & Balancing</p>
-                <p class="quiz-info">Pages 100-104 | 25 questions</p>
-                <a href="quiz19.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz18.html" class="quiz-card">
+                <span class="quiz-number">Quiz 18</span>
+                <div class="quiz-title">Alternator Systems & Voltage Regulation</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 87-91</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 20</h3>
-                <p>Brake System Fundamentals</p>
-                <p class="quiz-info">Pages 109-113 | 25 questions</p>
-                <a href="quiz20.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz19.html" class="quiz-card">
+                <span class="quiz-number">Quiz 19</span>
+                <div class="quiz-title">Starting Systems & Motor Operation</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 92-96</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 21</h3>
-                <p>Hydraulic Brake Principles</p>
-                <p class="quiz-info">Pages 114-118 | 25 questions</p>
-                <a href="quiz21.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz20.html" class="quiz-card">
+                <span class="quiz-number">Quiz 20</span>
+                <div class="quiz-title">Starter Motor Types & Pre-engaged Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 97-101</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 22</h3>
-                <p>Drum Brakes & Components</p>
-                <p class="quiz-info">Pages 119-123 | 25 questions</p>
-                <a href="quiz22.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz21.html" class="quiz-card">
+                <span class="quiz-number">Quiz 21</span>
+                <div class="quiz-title">Starter Motor Circuits & Stop-Start Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 102-106</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 23</h3>
-                <p>Disc Brakes & Calipers</p>
-                <p class="quiz-info">Pages 124-128 | 25 questions</p>
-                <a href="quiz23.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz22.html" class="quiz-card">
+                <span class="quiz-number">Quiz 22</span>
+                <div class="quiz-title">Lighting Systems & Regulations</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 107-111</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 24</h3>
-                <p>Brake Servos & Assistance Systems</p>
-                <p class="quiz-info">Pages 129-133 | 25 questions</p>
-                <a href="quiz24.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz23.html" class="quiz-card">
+                <span class="quiz-number">Quiz 23</span>
+                <div class="quiz-title">Headlight Technology & Auxiliary Lighting</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 112-117</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 25</h3>
-                <p>ABS & Electronic Brake Systems</p>
-                <p class="quiz-info">Pages 134-138 | 25 questions</p>
-                <a href="quiz25.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz24.html" class="quiz-card">
+                <span class="quiz-number">Quiz 24</span>
+                <div class="quiz-title">Direction Indicators & Lighting Circuits</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 118-123</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 26</h3>
-                <p>Brake Maintenance & Diagnostics</p>
-                <p class="quiz-info">Pages 139-143 | 25 questions</p>
-                <a href="quiz26.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz25.html" class="quiz-card">
+                <span class="quiz-number">Quiz 25</span>
+                <div class="quiz-title">Instrumentation & Warning Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 124-129</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 27</h3>
-                <p>Engine Components & Design</p>
-                <p class="quiz-info">Pages 148-152 | 25 questions</p>
-                <a href="quiz27.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz26.html" class="quiz-card">
+                <span class="quiz-number">Quiz 26</span>
+                <div class="quiz-title">Temperature & Fuel Gauges</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 130-134</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 28</h3>
-                <p>Cylinder Head & Valve Train</p>
-                <p class="quiz-info">Pages 153-157 | 25 questions</p>
-                <a href="quiz28.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz27.html" class="quiz-card">
+                <span class="quiz-number">Quiz 27</span>
+                <div class="quiz-title">Digital Displays & Driver Information</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 135-139</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 29</h3>
-                <p>Camshaft Drive Systems</p>
-                <p class="quiz-info">Pages 158-162 | 25 questions</p>
-                <a href="quiz29.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz28.html" class="quiz-card">
+                <span class="quiz-number">Quiz 28</span>
+                <div class="quiz-title">Wiper Systems & Screen Washers</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 140-144</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 30</h3>
-                <p>Engine Lubrication Systems</p>
-                <p class="quiz-info">Pages 163-167 | 25 questions</p>
-                <a href="quiz30.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz29.html" class="quiz-card">
+                <span class="quiz-number">Quiz 29</span>
+                <div class="quiz-title">Horn Systems & Sensor Technology</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 145-149</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 31</h3>
-                <p>Engine Cooling Systems</p>
-                <p class="quiz-info">Pages 168-172 | 25 questions</p>
-                <a href="quiz31.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz30.html" class="quiz-card">
+                <span class="quiz-number">Quiz 30</span>
+                <div class="quiz-title">Advanced Sensors & Switches</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 150-154</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 32</h3>
-                <p>Fuel System Fundamentals</p>
-                <p class="quiz-info">Pages 173-177 | 25 questions</p>
-                <a href="quiz32.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz31.html" class="quiz-card">
+                <span class="quiz-number">Quiz 31</span>
+                <div class="quiz-title">Digital Sensors & Communication</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 155-159</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 33</h3>
-                <p>Petrol Fuel Injection Systems</p>
-                <p class="quiz-info">Pages 178-182 | 25 questions</p>
-                <a href="quiz33.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz32.html" class="quiz-card">
+                <span class="quiz-number">Quiz 32</span>
+                <div class="quiz-title">Sensor Fault Diagnosis & Temperature Sensors</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 160-164</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 34</h3>
-                <p>Diesel Fuel Systems</p>
-                <p class="quiz-info">Pages 183-187 | 25 questions</p>
-                <a href="quiz34.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz33.html" class="quiz-card">
+                <span class="quiz-number">Quiz 33</span>
+                <div class="quiz-title">Pressure Sensors & Actuators</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 165-169</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 35</h3>
-                <p>Air Supply & Intake Systems</p>
-                <p class="quiz-info">Pages 188-192 | 25 questions</p>
-                <a href="quiz35.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz34.html" class="quiz-card">
+                <span class="quiz-number">Quiz 34</span>
+                <div class="quiz-title">Relays & Stepper Motors</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 170-173</span>
+                    <span>❓ 20 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 36</h3>
-                <p>Exhaust Systems & Emissions</p>
-                <p class="quiz-info">Pages 193-197 | 25 questions</p>
-                <a href="quiz36.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz35.html" class="quiz-card">
+                <span class="quiz-number">Quiz 35</span>
+                <div class="quiz-title">Heating & Ventilation Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 174-178</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 37</h3>
-                <p>Ignition Systems Fundamentals</p>
-                <p class="quiz-info">Pages 198-202 | 25 questions</p>
-                <a href="quiz37.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz36.html" class="quiz-card">
+                <span class="quiz-number">Quiz 36</span>
+                <div class="quiz-title">Air Conditioning Systems & Components</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 179-183</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 38</h3>
-                <p>Electronic Ignition & Engine Management</p>
-                <p class="quiz-info">Pages 203-207 | 25 questions</p>
-                <a href="quiz38.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz37.html" class="quiz-card">
+                <span class="quiz-number">Quiz 37</span>
+                <div class="quiz-title">A/C Operation & Refrigerant Safety</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 184-188</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 39</h3>
-                <p>Starting & Charging Systems</p>
-                <p class="quiz-info">Pages 208-212 | 25 questions</p>
-                <a href="quiz39.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz38.html" class="quiz-card">
+                <span class="quiz-number">Quiz 38</span>
+                <div class="quiz-title">A/C Maintenance & Fault Diagnosis</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 189-193</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 40</h3>
-                <p>Battery Service & Testing</p>
-                <p class="quiz-info">Pages 213-217 | 25 questions</p>
-                <a href="quiz40.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz39.html" class="quiz-card">
+                <span class="quiz-number">Quiz 39</span>
+                <div class="quiz-title">Security Systems & Immobilisers</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 194-198</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 41</h3>
-                <p>Lighting Systems & Regulations</p>
-                <p class="quiz-info">Pages 218-222 | 25 questions</p>
-                <a href="quiz41.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz40.html" class="quiz-card">
+                <span class="quiz-number">Quiz 40</span>
+                <div class="quiz-title">Advanced Security & Keyless Entry</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 199-203</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 42</h3>
-                <p>Auxiliary Electrical Systems</p>
-                <p class="quiz-info">Pages 223-227 | 25 questions</p>
-                <a href="quiz42.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz41.html" class="quiz-card">
+                <span class="quiz-number">Quiz 41</span>
+                <div class="quiz-title">Central Locking & Electric Windows</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 204-208</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 43</h3>
-                <p>Clutch System Fundamentals</p>
-                <p class="quiz-info">Pages 232-236 | 25 questions</p>
-                <a href="quiz43.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz42.html" class="quiz-card">
+                <span class="quiz-number">Quiz 42</span>
+                <div class="quiz-title">Electric Seats & Mirrors</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 209-213</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 44</h3>
-                <p>Clutch Operation & Components</p>
-                <p class="quiz-info">Pages 237-241 | 25 questions</p>
-                <a href="quiz44.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz43.html" class="quiz-card">
+                <span class="quiz-number">Quiz 43</span>
+                <div class="quiz-title">Electric Sunroofs & Auxiliary Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 214-218</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 45</h3>
-                <p>Manual Gearbox Principles</p>
-                <p class="quiz-info">Pages 242-246 | 25 questions</p>
-                <a href="quiz45.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz44.html" class="quiz-card">
+                <span class="quiz-number">Quiz 44</span>
+                <div class="quiz-title">In-Car Entertainment & Navigation Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 219-223</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 46</h3>
-                <p>Gearbox Components & Operation</p>
-                <p class="quiz-info">Pages 247-251 | 25 questions</p>
-                <a href="quiz46.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz45.html" class="quiz-card">
+                <span class="quiz-number">Quiz 45</span>
+                <div class="quiz-title">GPS Navigation, Communication & Security Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 224-228</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 47</h3>
-                <p>Automatic Transmission Fundamentals</p>
-                <p class="quiz-info">Pages 252-256 | 25 questions</p>
-                <a href="quiz47.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz46.html" class="quiz-card">
+                <span class="quiz-number">Quiz 46</span>
+                <div class="quiz-title">Alarms, Immobilisers & Wiper/Locking Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 229-233</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 48</h3>
-                <p>Torque Converters & Auto Gearboxes</p>
-                <p class="quiz-info">Pages 257-261 | 25 questions</p>
-                <a href="quiz48.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz47.html" class="quiz-card">
+                <span class="quiz-number">Quiz 47</span>
+                <div class="quiz-title">Airbags & Supplementary Restraint Systems (SRS)</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 234-238</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 49</h3>
-                <p>CVT & DSG Transmissions</p>
-                <p class="quiz-info">Pages 262-266 | 25 questions</p>
-                <a href="quiz49.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz48.html" class="quiz-card">
+                <span class="quiz-number">Quiz 48</span>
+                <div class="quiz-title">SRS Sensors, Pre-tensioners & Safety Procedures</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 239-243</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 50</h3>
-                <p>Final Drive & Differential Fundamentals</p>
-                <p class="quiz-info">Pages 267-271 | 25 questions</p>
-                <a href="quiz50.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz49.html" class="quiz-card">
+                <span class="quiz-number">Quiz 49</span>
+                <div class="quiz-title">SRS Diagnosis Case Study & Assessment Preparation</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 244-248</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 51</h3>
-                <p>Differential Types & Four-Wheel Drive</p>
-                <p class="quiz-info">Pages 272-276 | 25 questions</p>
-                <a href="quiz51.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz50.html" class="quiz-card">
+                <span class="quiz-number">Quiz 50</span>
+                <div class="quiz-title">Transmission & Driveline: Safety, Information & Tooling</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 249-254</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 52</h3>
-                <p>Driveshafts & CV Joints</p>
-                <p class="quiz-info">Pages 277-281 | 25 questions</p>
-                <a href="quiz52.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz51.html" class="quiz-card">
+                <span class="quiz-number">Quiz 51</span>
+                <div class="quiz-title">Clutches & Fluid Couplings: Components & Operation</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 255-259</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 53</h3>
-                <p>Transmission Maintenance & Diagnosis</p>
-                <p class="quiz-info">Pages 282-286 | 25 questions</p>
-                <a href="quiz53.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz52.html" class="quiz-card">
+                <span class="quiz-number">Quiz 52</span>
+                <div class="quiz-title">Clutch Systems, DMF & Fluid Couplings</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 260-264</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 54</h3>
-                <p>Clutch & Gearbox Faults</p>
-                <p class="quiz-info">Pages 287-290 | 25 questions</p>
-                <a href="quiz54.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz53.html" class="quiz-card">
+                <span class="quiz-number">Quiz 53</span>
+                <div class="quiz-title">Manual Gearboxes: Construction, Gears & Ratios</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 265-269</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 55</h3>
-                <p>Automatic Transmission Diagnosis</p>
-                <p class="quiz-info">Pages 291-294 | 25 questions</p>
-                <a href="quiz55.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz54.html" class="quiz-card">
+                <span class="quiz-number">Quiz 54</span>
+                <div class="quiz-title">Synchromesh, Sequential & Dual Clutch Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 270-274</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 56</h3>
-                <p>Driveline Fault Diagnosis</p>
-                <p class="quiz-info">Pages 295-298 | 25 questions</p>
-                <a href="quiz56.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz55.html" class="quiz-card">
+                <span class="quiz-number">Quiz 55</span>
+                <div class="quiz-title">Automatic Transmission: Epicyclic Gears & Control</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 275-279</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 57</h3>
-                <p>Communication Skills & Customer Service</p>
-                <p class="quiz-info">Pages 299-302 | 25 questions</p>
-                <a href="quiz57.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz56.html" class="quiz-card">
+                <span class="quiz-number">Quiz 56</span>
+                <div class="quiz-title">CVT Systems & Driveline Components</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 280-284</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 58</h3>
-                <p>Customer Interactions & Questioning</p>
-                <p class="quiz-info">Pages 303-305 | 25 questions</p>
-                <a href="quiz58.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz57.html" class="quiz-card">
+                <span class="quiz-number">Quiz 57</span>
+                <div class="quiz-title">Final Drive, Differentials & CV Joints</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 285-289</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 59</h3>
-                <p>Listening Skills & Active Listening</p>
-                <p class="quiz-info">Pages 306-307 | 25 questions</p>
-                <a href="quiz59.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz58.html" class="quiz-card">
+                <span class="quiz-number">Quiz 58</span>
+                <div class="quiz-title">Limited Slip Differentials & 4WD Systems</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 290-294</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 60</h3>
-                <p>Non-Verbal Communication</p>
-                <p class="quiz-info">Pages 307-308 | 25 questions</p>
-                <a href="quiz60.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz59.html" class="quiz-card">
+                <span class="quiz-number">Quiz 59</span>
+                <div class="quiz-title">Transmission Diagnosis & Fault Finding</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 295-299</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 61</h3>
-                <p>Active Listening & Feedback</p>
-                <p class="quiz-info">Pages 308-309 | 25 questions</p>
-                <a href="quiz61.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz60.html" class="quiz-card">
+                <span class="quiz-number">Quiz 60</span>
+                <div class="quiz-title">Transmission Systems Review & Assessment</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 300-302</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 62</h3>
-                <p>Customer Service Communication Skills</p>
-                <p class="quiz-info">Pages 309-313 | 25 questions</p>
-                <a href="quiz62.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz61.html" class="quiz-card">
+                <span class="quiz-number">Quiz 61</span>
+                <div class="quiz-title">Customer Service Skills & Communication</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 303-308</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
 
-            <div class="quiz-card">
-                <h3>Quiz 63</h3>
-                <p>Language & Telephone Communication</p>
-                <p class="quiz-info">Pages 314-318 | 25 questions</p>
-                <a href="quiz63.html"><button>Start Quiz</button></a>
-            </div>
+            <a href="quiz62.html" class="quiz-card">
+                <span class="quiz-number">Quiz 62</span>
+                <div class="quiz-title">Customer Service Communication Skills</div>
+                <div class="quiz-meta">
+                    <span>📄 Pages 309-313</span>
+                    <span>❓ 25 Questions</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p><strong>IMI Level 3 Light Vehicle Technology Quiz System</strong></p>
+            <p>Based on the Graham Stoakes Textbook | 62 Quizzes | 1,545 Questions | Pass Mark: 100%</p>
+            <p style="margin-top: 10px; color: #999; font-size: 0.9em;">
+                Updated: January 2026 | Current Progress: Pages 1-313
+            </p>
         </div>
     </div>
+
+    <script>
+        function filterQuizzes() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const quizCards = document.getElementsByClassName('quiz-card');
+            
+            for (let card of quizCards) {
+                const title = card.getElementsByClassName('quiz-title')[0].textContent.toLowerCase();
+                if (title.includes(searchInput)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+        }
+    </script>
 </body>
 </html>
