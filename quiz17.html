@@ -91,6 +91,26 @@
                         <h1>Quiz 17: Turbocharging & Supercharging</h1><p>Question {currentQuestion + 1} of {totalQuestions}</p><div className="progress-bar"><div className="progress-fill" style={{ width: `${progress}%` }}></div></div></div><div className="quiz-content"><div className="question-section"><div className="question-number">Question {currentQuestion + 1}</div><div className="question-text">{currentQ.question}</div><div className="options">{currentQ.options.map((option, index) => { let className = 'option'; if (selectedAnswer === index) className += ' selected'; if (isAnswerChecked) { className += ' disabled'; if (index === currentQ.correct) className += ' correct'; if (selectedAnswer === index && index !== currentQ.correct) { className += ' incorrect'; } } return (<div key={index} className={className} onClick={() => handleAnswerClick(index)}>{option}</div>); })}</div></div><div className="navigation"><button className="btn btn-secondary" onClick={handlePreviousQuestion} disabled={currentQuestion === 0}>Previous</button>{!isAnswerChecked ? (<button className="btn btn-primary" onClick={handleCheckAnswer} disabled={selectedAnswer === null}>Check Answer</button>) : (<button className="btn btn-primary" onClick={handleNextQuestion}>{currentQuestion === totalQuestions - 1 ? 'Finish Quiz' : 'Next Question'}</button>)}</div></div></div>);
         }
         const root = ReactDOM.createRoot(document.getElementById('root')); root.render(<Quiz />);
+        // Progress Tracking - Add this to each quiz file
+import { auth, database } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Mark quiz as completed when score is 100%
+        const originalShowResults = window.showResults;
+        window.showResults = function() {
+            originalShowResults();
+            const score = (correctAnswers / quizData.questions.length) * 100;
+            if (score === 100) {
+                const quizNum = quizData.quizNumber; // Get from quiz data
+                const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNum}`);
+                set(progressRef, true).catch(console.error);
+            }
+        };
+    }
+});
     </script>
 </body>
 </html>
