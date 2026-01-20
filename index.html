@@ -176,6 +176,24 @@
             <h1>🚗 IMI Level 3 Light Vehicle Technology</h1>
             <p>Comprehensive Quiz Collection - Graham Stoakes Textbook</p>
             
+            <!-- Login/Signup Banner (shown when not logged in) -->
+            <div id="authBanner" style="display: none; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0; text-align: center;">
+                <h3 style="margin: 0 0 10px 0; font-size: 1.3em;">📊 Track Your Progress!</h3>
+                <p style="margin: 0 0 15px 0; opacity: 0.95;">Create a free account to save your quiz progress and see which quizzes you've completed</p>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="auth.html" style="background: white; color: #059669; padding: 12px 30px; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-block;">Sign Up / Login</a>
+                </div>
+            </div>
+
+            <!-- Logged In Banner (shown when logged in) -->
+            <div id="loggedInBanner" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0; text-align: center;">
+                <h3 style="margin: 0 0 10px 0; font-size: 1.3em;">👋 Welcome back, <span id="userEmailDisplay"></span>!</h3>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="dashboard.html" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-block;">View My Dashboard</a>
+                    <button onclick="handleLogout()" style="background: rgba(255,255,255,0.2); color: white; padding: 12px 30px; border-radius: 10px; border: 2px solid white; font-weight: 600; cursor: pointer;">Logout</button>
+                </div>
+            </div>
+            
             <div class="stats">
                 <div class="stat-box">
                     <div class="stat-number">68</div>
@@ -828,35 +846,32 @@
         // Optional authentication - don't block access
         try {
             const { auth } = await import('./firebase-config.js');
-            const { onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js");
+            const { onAuthStateChanged, signOut } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js");
+
+            window.handleLogout = async function() {
+                try {
+                    await signOut(auth);
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Logout error:', error);
+                }
+            };
 
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    // User is logged in - show dashboard link
-                    const header = document.querySelector('.header');
-                    if (header && !document.getElementById('dashboardLink')) {
-                        const dashLink = document.createElement('a');
-                        dashLink.href = 'dashboard.html';
-                        dashLink.id = 'dashboardLink';
-                        dashLink.style.cssText = 'position: fixed; top: 20px; right: 20px; background: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; color: #667eea; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.2);';
-                        dashLink.textContent = '📊 My Dashboard';
-                        document.body.appendChild(dashLink);
-                    }
+                    // User is logged in
+                    document.getElementById('authBanner').style.display = 'none';
+                    document.getElementById('loggedInBanner').style.display = 'block';
+                    document.getElementById('userEmailDisplay').textContent = user.email;
                 } else {
-                    // Not logged in - show login link
-                    const header = document.querySelector('.header');
-                    if (header && !document.getElementById('loginLink')) {
-                        const loginLink = document.createElement('a');
-                        loginLink.href = 'auth.html';
-                        loginLink.id = 'loginLink';
-                        loginLink.style.cssText = 'position: fixed; top: 20px; right: 20px; background: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; color: #667eea; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.2);';
-                        loginLink.textContent = '🔐 Login';
-                        document.body.appendChild(loginLink);
-                    }
+                    // Not logged in
+                    document.getElementById('authBanner').style.display = 'block';
+                    document.getElementById('loggedInBanner').style.display = 'none';
                 }
             });
         } catch (error) {
-            // Firebase not loaded, that's ok
+            // Firebase not loaded, show auth banner
+            document.getElementById('authBanner').style.display = 'block';
             console.log('Running without authentication');
         }
 
