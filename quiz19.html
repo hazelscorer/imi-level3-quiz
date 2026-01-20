@@ -528,26 +528,6 @@
         }
 
         ReactDOM.render(<Quiz />, document.getElementById('root'));
-        // Progress Tracking - Add this to each quiz file
-import { auth, database } from './firebase-config.js';
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // Mark quiz as completed when score is 100%
-        const originalShowResults = window.showResults;
-        window.showResults = function() {
-            originalShowResults();
-            const score = (correctAnswers / quizData.questions.length) * 100;
-            if (score === 100) {
-                const quizNum = quizData.quizNumber; // Get from quiz data
-                const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNum}`);
-                set(progressRef, true).catch(console.error);
-            }
-        };
-    }
-});
     </script>
 </body>
 </html>
