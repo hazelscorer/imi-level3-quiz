@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - IMI Quiz Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .header-left p {
+            color: #666;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .quiz-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .quiz-card.completed {
+            border: 3px solid #48bb78;
+        }
+
+        .quiz-card.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #48bb78;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .quiz-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+        }
+
+        .quiz-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .quiz-meta {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                text-align: center;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>🚗 My Dashboard</h1>
+                <p id="userEmail">Loading...</p>
+            </div>
+            <div class="header-right">
+                <a href="index.html" class="btn btn-secondary">All Quizzes</a>
+                <button class="btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="completedCount">0</div>
+                <div class="stat-label">Quizzes Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="remainingCount">68</div>
+                <div class="stat-label">Quizzes Remaining</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="progressPercent">0%</div>
+                <div class="stat-label">Overall Progress</div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%">
+                <span id="progressText">0%</span>
+            </div>
+        </div>
+
+        <div class="quiz-grid" id="quizGrid">
+            <!-- Quizzes will be loaded here -->
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, database } from './firebase-config.js';
+        import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { ref, get, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        let currentUser = null;
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('userEmail').textContent = user.email;
+                loadUserProgress();
+            } else {
+                window.location.href = 'auth.html';
+            }
+        });
+
+        window.handleLogout = async function() {
+            try {
+                await signOut(auth);
+                window.location.href = 'auth.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        };
+
+        const quizzes = [
+            {num: 1, title: "Health & Safety Fundamentals", pages: "2-6"},
+            {num: 2, title: "PPE & Emergency Procedures", pages: "7-11"},
+            {num: 3, title: "Hazardous Substances & Workshop Safety", pages: "12-16"},
+            {num: 4, title: "Fire Safety & Risk Assessment", pages: "17-21"},
+            {num: 5, title: "Manual Handling & Workplace Transport", pages: "22-26"},
+            {num: 6, title: "Electrical Safety & Equipment", pages: "27-31"},
+            {num: 7, title: "Workshop Equipment Safety", pages: "32-36"},
+            {num: 8, title: "Vehicle Lifting & Support", pages: "37-41"},
+            {num: 9, title: "Environmental Protection", pages: "42-46"},
+            {num: 10, title: "Health & Safety Review", pages: "47-49"},
+            {num: 11, title: "Engine Fundamentals", pages: "52-56"},
+            {num: 12, title: "Four-Stroke Cycle & Engine Design", pages: "57-61"},
+            {num: 13, title: "Engine Components & Construction", pages: "62-66"},
+            {num: 14, title: "Valve Timing & Variable Valve Systems", pages: "67-71"},
+            {num: 15, title: "Engine Lubrication Systems", pages: "72-76"},
+            {num: 16, title: "Engine Cooling Systems", pages: "77-81"},
+            {num: 17, title: "Diesel Engine Principles", pages: "82-86"},
+            {num: 18, title: "Turbocharging & Supercharging", pages: "87-91"},
+            {num: 19, title: "Hybrid & Alternative Fuel Systems", pages: "92-96"},
+            {num: 20, title: "Engine Systems Review", pages: "97-100"},
+            {num: 21, title: "Fuel System Fundamentals", pages: "103-107"},
+            {num: 22, title: "Petrol Injection Systems", pages: "108-112"},
+            {num: 23, title: "Diesel Fuel Injection", pages: "113-117"},
+            {num: 24, title: "Air Intake & Filtration", pages: "118-122"},
+            {num: 25, title: "Exhaust Systems & Emissions", pages: "123-127"},
+            {num: 26, title: "Catalytic Converters & DPF", pages: "128-132"},
+            {num: 27, title: "Emission Control Systems", pages: "133-137"},
+            {num: 28, title: "Fuel System Diagnosis", pages: "138-142"},
+            {num: 29, title: "Fuel & Exhaust Review", pages: "143-145"},
+            {num: 30, title: "Ignition System Principles", pages: "148-152"},
+            {num: 31, title: "Distributorless Ignition Systems", pages: "153-157"},
+            {num: 32, title: "Spark Plugs & Ignition Timing", pages: "158-162"},
+            {num: 33, title: "Charging System Components", pages: "163-167"},
+            {num: 34, title: "Starting Systems", pages: "168-172"},
+            {num: 35, title: "Battery Technology & Maintenance", pages: "173-177"},
+            {num: 36, title: "Lighting Systems", pages: "178-182"},
+            {num: 37, title: "Auxiliary Electrical Systems", pages: "183-187"},
+            {num: 38, title: "Electrical Circuits & Diagnosis", pages: "188-192"},
+            {num: 39, title: "Electrical Systems Review", pages: "193-195"},
+            {num: 40, title: "Engine Management Fundamentals", pages: "198-202"},
+            {num: 41, title: "Sensors & Actuators", pages: "203-207"},
+            {num: 42, title: "ECU Operation & Mapping", pages: "208-212"},
+            {num: 43, title: "Fuel & Ignition Control", pages: "213-217"},
+            {num: 44, title: "Emission Control Strategies", pages: "218-222"},
+            {num: 45, title: "Diagnostics & Fault Codes", pages: "223-227"},
+            {num: 46, title: "OBD Systems", pages: "228-232"},
+            {num: 47, title: "Advanced Diagnostics", pages: "233-237"},
+            {num: 48, title: "Engine Management Review", pages: "238-240"},
+            {num: 49, title: "Transmission Fundamentals", pages: "243-247"},
+            {num: 50, title: "Friction & Power Transfer", pages: "248-252"},
+            {num: 51, title: "Clutch Operation & Types", pages: "253-259"},
+            {num: 52, title: "Clutch Systems, DMF & Fluid Couplings", pages: "260-264"},
+            {num: 53, title: "Manual Gearboxes: Construction, Gears & Ratios", pages: "265-269"},
+            {num: 54, title: "Synchromesh, Sequential & Dual Clutch Systems", pages: "270-274"},
+            {num: 55, title: "Automatic Transmission: Epicyclic Gears & Control", pages: "275-279"},
+            {num: 56, title: "CVT Systems & Driveline Components", pages: "280-284"},
+            {num: 57, title: "Final Drive, Differentials & CV Joints", pages: "285-289"},
+            {num: 58, title: "Limited Slip Differentials & 4WD Systems", pages: "290-294"},
+            {num: 59, title: "Transmission Diagnosis & Fault Finding", pages: "295-299"},
+            {num: 60, title: "Transmission Systems Review & Assessment", pages: "300-302"},
+            {num: 61, title: "Customer Service Skills & Communication", pages: "303-308"},
+            {num: 62, title: "Customer Service Communication Skills", pages: "309-313"},
+            {num: 63, title: "Positive Language & Telephone Communication", pages: "314-318"},
+            {num: 64, title: "Customer Expectations & Complaints", pages: "319-323"},
+            {num: 65, title: "Feedback Methods & Company Standards", pages: "324-328"},
+            {num: 66, title: "Service Agreements & Repair Information", pages: "329-333"},
+            {num: 67, title: "Consumer Legislation & Data Protection", pages: "334-338"},
+            {num: 68, title: "Disability & Health and Safety", pages: "339-343"}
+        ];
+
+        function loadUserProgress() {
+            const userProgressRef = ref(database, `users/${currentUser.uid}/progress`);
+            
+            onValue(userProgressRef, (snapshot) => {
+                const progress = snapshot.val() || {};
+                renderQuizzes(progress);
+                updateStats(progress);
+            });
+        }
+
+        function renderQuizzes(progress) {
+            const grid = document.getElementById('quizGrid');
+            grid.innerHTML = '';
+
+            quizzes.forEach(quiz => {
+                const completed = progress[`quiz${quiz.num}`] === true;
+                const card = document.createElement('a');
+                card.href = `quiz${quiz.num}.html`;
+                card.className = `quiz-card ${completed ? 'completed' : ''}`;
+                card.innerHTML = `
+                    <span class="quiz-number">Quiz ${quiz.num}</span>
+                    <div class="quiz-title">${quiz.title}</div>
+                    <div class="quiz-meta">📄 Pages ${quiz.pages} | ❓ 25 Questions</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function updateStats(progress) {
+            const completed = Object.values(progress).filter(v => v === true).length;
+            const remaining = 68 - completed;
+            const percent = Math.round((completed / 68) * 100);
+
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('remainingCount').textContent = remaining;
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressText').textContent = percent + '%';
+        }
+    </script>
+</body>
+</html>
