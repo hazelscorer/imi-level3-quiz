@@ -825,6 +825,15 @@
     </div>
 
     <script>
+        import { auth } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+// Redirect to login if not authenticated
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = 'auth.html';
+    }
+});
         function filterQuizzes() {
             const searchInput = document.getElementById('searchInput').value.toLowerCase();
             const quizCards = document.getElementsByClassName('quiz-card');
