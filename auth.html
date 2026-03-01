@@ -186,7 +186,20 @@
             </div>
             <button class="btn" onclick="handleLogin()">Login</button>
             <div class="toggle-form">
-                Don't have an account? <a href="#" onclick="showSignup(); return false;">Sign up</a>
+                Don't have an account? <a href="#" onclick="showSignup(); return false;">Sign up</a><br>
+                <a href="#" onclick="showForgotPassword(); return false;" style="font-size: 0.9em;">Forgot password?</a>
+            </div>
+        </div>
+
+        <!-- Forgot Password Form -->
+        <div id="forgotPasswordForm" style="display: none;">
+            <div class="form-group">
+                <label for="resetEmail">Email</label>
+                <input type="email" id="resetEmail" placeholder="Enter your email" required>
+            </div>
+            <button class="btn" onclick="handlePasswordReset()">Send Reset Link</button>
+            <div class="toggle-form">
+                <a href="#" onclick="showLogin(); return false;">Back to Login</a>
             </div>
         </div>
 
@@ -219,6 +232,7 @@
         import { 
             signInWithEmailAndPassword, 
             createUserWithEmailAndPassword,
+            sendPasswordResetEmail,
             onAuthStateChanged 
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
@@ -232,12 +246,21 @@
         window.showSignup = function() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('signupForm').style.display = 'block';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
             clearMessages();
         };
 
         window.showLogin = function() {
             document.getElementById('signupForm').style.display = 'none';
             document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            clearMessages();
+        };
+
+        window.showForgotPassword = function() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'block';
             clearMessages();
         };
 
@@ -279,6 +302,31 @@
                     errorMessage = 'No account found with this email.';
                 } else if (error.code === 'auth/wrong-password') {
                     errorMessage = 'Incorrect password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Invalid email address.';
+                }
+                showError(errorMessage);
+            }
+        };
+
+        window.handlePasswordReset = async function() {
+            const email = document.getElementById('resetEmail').value;
+
+            if (!email) {
+                showError('Please enter your email address');
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showSuccess('Password reset email sent! Check your inbox (and spam folder).');
+                setTimeout(() => {
+                    showLogin();
+                }, 3000);
+            } catch (error) {
+                let errorMessage = 'Failed to send reset email. Please try again.';
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'No account found with this email address.';
                 } else if (error.code === 'auth/invalid-email') {
                     errorMessage = 'Invalid email address.';
                 }
