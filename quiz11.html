@@ -368,7 +368,7 @@
                             <button className="btn btn-primary" onClick={handleRestartQuiz}>
                                 Retake Quiz
                             </button>
-                            <a href="index.html" className="home-link">Back to Home</a>
+                            <a href="dashboard.html" className="home-link">Back to Dashboard</a>
                         </div>
                     </div>
                 );
@@ -458,7 +458,7 @@
                     const resultsDiv = document.querySelector('.results-container.show');
                     if (resultsDiv) {
                         const scoreText = resultsDiv.textContent;
-                        const match = scoreText.match(/(\\d+)\\/(\\d+)/);
+                        const match = scoreText.match(/(\d+)\/(\d+)/);
                         if (match) {
                             const [_, correct, total] = match;
                             if (correct === total) {
