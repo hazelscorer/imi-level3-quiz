@@ -345,7 +345,7 @@
                 return (
                     <div className="quiz-container">
                         <div className="quiz-header">
-                        <a href="index.html" className="home-text-link">← Back to Home</a>
+                        <a href="dashboard.html" className="home-text-link">← Back to Dashboard</a>
                         <h1>Quiz Complete!</h1>
                         </div>
                         <div className="results">
@@ -368,7 +368,7 @@
                             <button className="btn btn-primary" onClick={handleRestartQuiz}>
                                 Retake Quiz
                             </button>
-                            <a href="index.html" className="home-link">Back to Home</a>
+                            <a href="dashboard.html" className="home-link">Back to Dashboard</a>
                         </div>
                     </div>
                 );
@@ -377,7 +377,7 @@
             return (
                 <div className="quiz-container">
                     <div className="quiz-header">
-                        <a href="index.html" className="home-text-link">← Back to Home</a>
+                        <a href="dashboard.html" className="home-text-link">← Back to Dashboard</a>
                         <h1>Quiz 8: ABS Fault Diagnosis</h1>
                         <p>Question {currentQuestion + 1} of {totalQuestions}</p>
                         <div className="progress-bar">
@@ -444,6 +444,26 @@
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<Quiz />);
+        // Progress Tracking - Add this to each quiz file
+import { auth, database } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Mark quiz as completed when score is 100%
+        const originalShowResults = window.showResults;
+        window.showResults = function() {
+            originalShowResults();
+            const score = (correctAnswers / quizData.questions.length) * 100;
+            if (score === 100) {
+                const quizNum = quizData.quizNumber; // Get from quiz data
+                const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNum}`);
+                set(progressRef, true).catch(console.error);
+            }
+        };
+    }
+});
     </script>
 
 <script type="module">
@@ -456,13 +476,12 @@
             if (user) {
                 const quizNumber = 8;
                 const checkInterval = setInterval(() => {
-                    const resultsDiv = document.querySelector('.results-container.show');
-                    if (resultsDiv) {
-                        const scoreText = resultsDiv.textContent;
-                        const match = scoreText.match(/(\\d+)\\/(\\d+)/);
+                    const scoreDiv = document.querySelector('.score');
+                    if (scoreDiv && scoreDiv.textContent) {
+                        const match = scoreDiv.textContent.match(/(\\d+)\\/(\\d+)/);
                         if (match) {
                             const [_, correct, total] = match;
-                            if (correct === total) {
+                            if (correct === total && parseInt(correct) > 0) {
                                 const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNumber}`);
                                 set(progressRef, true).then(() => {
                                     console.log(`✅ Quiz ${quizNumber} completion saved!`);
@@ -475,7 +494,7 @@
             }
         });
     } catch (error) {
-        console.log('Progress tracking not available');
+        console.log('Progress tracking not available:', error);
     }
 </script>
 </body>

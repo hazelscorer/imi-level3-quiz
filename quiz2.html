@@ -83,8 +83,8 @@
                                     <button onClick={() => {setCur(0); setAns({}); setRes(false);}} className="flex-1 bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
                                         <RotateCcw className="w-5 h-5" />Retake Quiz
                                     </button>
-                                    <a href="index.html" className="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center gap-2">
-                                        <ChevronLeft className="w-5 h-5" />Back to Home
+                                    <a href="dashboard.html" className="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center gap-2">
+                                        <ChevronLeft className="w-5 h-5" />Back to Dashboard
                                     </a>
                                 </div>
                             </div>
@@ -99,8 +99,8 @@
                     <div className="max-w-4xl mx-auto">
                         <div className="bg-white rounded-lg shadow-lg p-8 mt-8">
                             <div className="mb-6">
-                                <a href="index.html" className="text-blue-600 hover:text-blue-800 flex items-center gap-2 mb-4">
-                                    <ChevronLeft className="w-4 h-4" />Back to Home
+                                <a href="dashboard.html" className="text-blue-600 hover:text-blue-800 flex items-center gap-2 mb-4">
+                                    <ChevronLeft className="w-4 h-4" />Back to Dashboard
                                 </a>
                                 <h2 className="text-2xl font-bold text-gray-800">Chapter 1: RIDDOR, Risk Assessment & Safety Signs (Pages 8-13)</h2>
                                 <div className="flex items-center justify-between mt-4">
@@ -147,6 +147,26 @@
         };
 
         ReactDOM.render(<QuizApp />, document.getElementById('root'));
+        // Progress Tracking - Add this to each quiz file
+import { auth, database } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Mark quiz as completed when score is 100%
+        const originalShowResults = window.showResults;
+        window.showResults = function() {
+            originalShowResults();
+            const score = (correctAnswers / quizData.questions.length) * 100;
+            if (score === 100) {
+                const quizNum = quizData.quizNumber; // Get from quiz data
+                const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNum}`);
+                set(progressRef, true).catch(console.error);
+            }
+        };
+    }
+});
     </script>
 
 <script type="module">
@@ -159,12 +179,12 @@
             if (user) {
                 const quizNumber = 2;
                 const checkInterval = setInterval(() => {
-                    const resultsDiv = document.querySelector('.text-6xl');
-                    if (resultsDiv && resultsDiv.textContent) {
-                        const match = resultsDiv.textContent.match(/(\\d+)\\/(\\d+)/);
+                    const scoreDiv = document.querySelector('.text-6xl');
+                    if (scoreDiv && scoreDiv.textContent) {
+                        const match = scoreDiv.textContent.match(/(\\d+)\\/(\\d+)/);
                         if (match) {
                             const [_, correct, total] = match;
-                            if (correct === total) {
+                            if (correct === total && parseInt(correct) > 0) {
                                 const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNumber}`);
                                 set(progressRef, true).then(() => {
                                     console.log(`✅ Quiz ${quizNumber} completion saved!`);
@@ -177,7 +197,7 @@
             }
         });
     } catch (error) {
-        console.log('Progress tracking not available');
+        console.log('Progress tracking not available:', error);
     }
 </script>
 </body>
