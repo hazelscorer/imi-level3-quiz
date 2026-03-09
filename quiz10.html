@@ -477,7 +477,7 @@ onAuthStateChanged(auth, (user) => {
                 const checkInterval = setInterval(() => {
                     const scoreDiv = document.querySelector('.score');
                     if (scoreDiv && scoreDiv.textContent) {
-                        const match = scoreDiv.textContent.match(/(d+)\/(d+)/);
+                        const match = scoreDiv.textContent.match(/(\d+)\/(\d+)/);
                         if (match) {
                             const [_, correct, total] = match;
                             if (correct === total && parseInt(correct) > 0) {
