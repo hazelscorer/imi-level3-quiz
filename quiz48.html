@@ -318,8 +318,8 @@
 </head>
 <body>
     <div class="container">
-        <a href="index.html" style="display: inline-block; margin-bottom: 20px; padding: 12px 24px; background: rgba(255,255,255,0.9); color: #667eea; text-decoration: none; border-radius: 10px; font-weight: 600; transition: all 0.3s ease;">
-            ← Back to Home
+        <a href="dashboard.html" style="display: inline-block; margin-bottom: 20px; padding: 12px 24px; background: rgba(255,255,255,0.9); color: #667eea; text-decoration: none; border-radius: 10px; font-weight: 600; transition: all 0.3s ease;">
+            ← Back to Dashboard
         </a>
         
         <div class="quiz-header">
@@ -537,6 +537,26 @@
 
         // Initialize quiz
         loadQuestion();
+        // Progress Tracking - Add this to each quiz file
+import { auth, database } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Mark quiz as completed when score is 100%
+        const originalShowResults = window.showResults;
+        window.showResults = function() {
+            originalShowResults();
+            const score = (correctAnswers / quizData.questions.length) * 100;
+            if (score === 100) {
+                const quizNum = quizData.quizNumber; // Get from quiz data
+                const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNum}`);
+                set(progressRef, true).catch(console.error);
+            }
+        };
+    }
+});
     </script>
 
 <script type="module">
@@ -555,7 +575,7 @@
                         const match = resultsText.match(/Score:\\s*(\\d+)\\s*\\/\\s*(\\d+)/);
                         if (match) {
                             const [_, correct, total] = match;
-                            if (correct === total) {
+                            if (correct === total && parseInt(correct) > 0) {
                                 const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNumber}`);
                                 set(progressRef, true).then(() => {
                                     console.log(`✅ Quiz ${quizNumber} completion saved!`);
@@ -568,7 +588,7 @@
             }
         });
     } catch (error) {
-        console.log('Progress tracking not available');
+        console.log('Progress tracking not available:', error);
     }
 </script>
 </body>
