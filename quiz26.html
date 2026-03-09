@@ -321,7 +321,7 @@
             if (quizComplete) {
                 return (
                     <div className="container">
-                        <a href="index.html" className="home-button">← Back to Home</a>
+                        <a href="dashboard.html" className="home-button">← Back to Dashboard</a>
                         <div className="quiz-card">
                             <div className="quiz-header">
                                 <h1>Quiz 26 Complete!</h1>
@@ -353,7 +353,7 @@
 
                                 {passed ? (
                                     <div style={{ marginTop: '24px' }}>
-                                        <a href="index.html" className="restart-button">
+                                        <a href="dashboard.html" className="restart-button">
                                             Return to Home
                                         </a>
                                     </div>
@@ -370,7 +370,7 @@
 
             return (
                 <div className="container">
-                    <a href="index.html" className="home-button">← Back to Home</a>
+                    <a href="dashboard.html" className="home-button">← Back to Dashboard</a>
                     <div className="quiz-card">
                         <div className="quiz-header">
                             <h1>Quiz 26</h1>
@@ -433,6 +433,26 @@
         }
 
         ReactDOM.render(<Quiz />, document.getElementById('root'));
+        // Progress Tracking - Add this to each quiz file
+import { auth, database } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Mark quiz as completed when score is 100%
+        const originalShowResults = window.showResults;
+        window.showResults = function() {
+            originalShowResults();
+            const score = (correctAnswers / quizData.questions.length) * 100;
+            if (score === 100) {
+                const quizNum = quizData.quizNumber; // Get from quiz data
+                const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNum}`);
+                set(progressRef, true).catch(console.error);
+            }
+        };
+    }
+});
     </script>
 
 <script type="module">
@@ -445,13 +465,12 @@
             if (user) {
                 const quizNumber = 26;
                 const checkInterval = setInterval(() => {
-                    const resultsDiv = document.querySelector('.results-container.show');
-                    if (resultsDiv) {
-                        const scoreText = resultsDiv.textContent;
-                        const match = scoreText.match(/(\\d+)\\/(\\d+)/);
+                    const scoreDiv = document.querySelector('.score');
+                    if (scoreDiv && scoreDiv.textContent) {
+                        const match = scoreDiv.textContent.match(/(\\d+)\\/(\\d+)/);
                         if (match) {
                             const [_, correct, total] = match;
-                            if (correct === total) {
+                            if (correct === total && parseInt(correct) > 0) {
                                 const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNumber}`);
                                 set(progressRef, true).then(() => {
                                     console.log(`✅ Quiz ${quizNumber} completion saved!`);
@@ -464,7 +483,7 @@
             }
         });
     } catch (error) {
-        console.log('Progress tracking not available');
+        console.log('Progress tracking not available:', error);
     }
 </script>
 </body>
