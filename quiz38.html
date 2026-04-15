@@ -445,17 +445,20 @@
             if (user) {
                 const quizNumber = 38;
                 const checkInterval = setInterval(() => {
-                    const scoreDiv = document.querySelector('.score');
-                    if (scoreDiv && scoreDiv.textContent) {
-                        const match = scoreDiv.textContent.match(/(\d+)\/(\d+)/);
-                        if (match) {
-                            const [_, correct, total] = match;
-                            if (correct === total && parseInt(correct) > 0) {
-                                const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNumber}`);
-                                set(progressRef, true).then(() => {
-                                    console.log(`✅ Quiz ${quizNumber} completion saved!`);
-                                    clearInterval(checkInterval);
-                                }).catch(console.error);
+                    const resultValues = document.querySelectorAll('.result-value');
+                    for (const elem of resultValues) {
+                        if (elem && elem.textContent) {
+                            const match = elem.textContent.match(/(\d+)\s*\/\s*(\d+)/);
+                            if (match) {
+                                const [_, correct, total] = match;
+                                if (correct === total && parseInt(correct) > 0) {
+                                    const progressRef = ref(database, `users/${user.uid}/progress/quiz${quizNumber}`);
+                                    set(progressRef, true).then(() => {
+                                        console.log(`✅ Quiz ${quizNumber} completion saved!`);
+                                        clearInterval(checkInterval);
+                                    }).catch(console.error);
+                                }
+                                break;
                             }
                         }
                     }
