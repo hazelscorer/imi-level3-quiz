@@ -445,10 +445,10 @@
             if (user) {
                 const quizNumber = 33;
                 const checkInterval = setInterval(() => {
-                    const resultValues = document.querySelectorAll('.results-stat');
+                    const resultValues = document.querySelectorAll('.result-value');
                     for (const elem of resultValues) {
-                        if (elem && elem.textContent && elem.textContent.includes("out of")) {
-                            const match = elem.textContent.match(/(\d+)\s+out of\s+(\d+)/);
+                        if (elem && elem.textContent) {
+                            const match = elem.textContent.match(/(\d+)\s*\/\s*(\d+)/);
                             if (match) {
                                 const [_, correct, total] = match;
                                 if (correct === total && parseInt(correct) > 0) {

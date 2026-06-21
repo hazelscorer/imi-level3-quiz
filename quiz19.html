@@ -542,7 +542,7 @@
                 const checkInterval = setInterval(() => {
                     const resultValues = document.querySelectorAll('.result-value');
                     for (const elem of resultValues) {
-                        if (elem && elem.textContent && elem.textContent.includes("/")) {
+                        if (elem && elem.textContent) {
                             const match = elem.textContent.match(/(\d+)\s*\/\s*(\d+)/);
                             if (match) {
                                 const [_, correct, total] = match;
